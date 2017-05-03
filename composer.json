@@ -18,11 +18,5 @@
     "psr-4": {
       "Triadev\\Es\\": "src/"
     }
-  },
-  "extra": {
-    "branch-alias": {
-      "dev-master": "1.0-dev"
-    }
-  },
-  "minimum-stability": "dev"
+  }
 }
