@@ -1,5 +1,5 @@
 {
-  "name": "triadev/LaravelElasticsearchProvider",
+  "name": "triadev/laravel-elasticsearch-provider",
   "description": "An elasticsearch provider for laravel.",
   "keywords": ["Elasticsearch", "Laravel", "Lumen"],
   "license": "MIT",
