@@ -1,6 +1,6 @@
 {
   "name": "triadev/laravel-elasticsearch-provider",
-  "description": "An elasticsearch provider for laravel.",
+  "description": "A service provider for laravel to managing data versions in elasticsearch.",
   "keywords": ["Elasticsearch", "Laravel", "Lumen"],
   "license": "MIT",
   "authors": [
