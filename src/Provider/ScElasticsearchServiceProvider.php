@@ -15,12 +15,14 @@ use Triadev\Es\Contract\ScElasticsearchClientContract;
 use Triadev\Es\Contract\ScElasticsearchDocumentContract;
 use Triadev\Es\Contract\ScElasticsearchIndexContract;
 use Triadev\Es\Contract\ScElasticsearchMappingContract;
+use Triadev\Es\Contract\ScElasticsearchSearchContract;
 use Triadev\Es\ScElasticsearchAlias;
 use Triadev\Es\ScElasticsearchClient;
 use Triadev\Es\ScElasticsearchDocument;
 use Triadev\Es\ScElasticsearchIndex;
 use Triadev\Es\ScElasticsearchMapping;
 use Illuminate\Support\ServiceProvider;
+use Triadev\Es\ScElasticsearchSearch;
 
 /**
  * Class ScElasticsearchServiceProvider
@@ -82,6 +84,10 @@ class ScElasticsearchServiceProvider extends ServiceProvider
 
         $this->app->singleton(ScElasticsearchDocumentContract::class, function () {
             return new ScElasticsearchDocument(app(ScElasticsearchClientContract::class));
+        });
+
+        $this->app->singleton(ScElasticsearchSearchContract::class, function () {
+            return new ScElasticsearchSearch(app(ScElasticsearchClientContract::class));
         });
 
         $this->app->singleton(ScElasticsearchMappingContract::class, function () {
