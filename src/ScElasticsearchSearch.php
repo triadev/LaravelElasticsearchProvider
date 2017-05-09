@@ -51,7 +51,7 @@ class ScElasticsearchSearch implements ScElasticsearchSearchContract
         $params['body'] = $body;
 
         $result = $this->esClient->getEsClient()->search($params);
-
+        
         if (!$raw) {
             $searchResult = new SearchResult();
             $searchResult->setTook($result['took']);
@@ -78,6 +78,11 @@ class ScElasticsearchSearch implements ScElasticsearchSearchContract
 
                     $searchResult->addHit($h);
                 }
+            }
+
+            // Aggregations
+            if (array_key_exists('aggregations', $result)) {
+                $searchResult->setAggs($result['aggregations']);
             }
 
             return $searchResult;

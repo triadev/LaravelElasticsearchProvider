@@ -40,6 +40,11 @@ class SearchResult
     private $hits = [];
 
     /**
+     * @var array
+     */
+    private $aggs = [];
+
+    /**
      * @return int
      */
     public function getTook(): int
@@ -141,5 +146,21 @@ class SearchResult
     public function setTimedOut(int $timed_out)
     {
         $this->timed_out = $timed_out;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAggs(): array
+    {
+        return $this->aggs;
+    }
+
+    /**
+     * @param array $aggs
+     */
+    public function setAggs(array $aggs)
+    {
+        $this->aggs = $aggs;
     }
 }
