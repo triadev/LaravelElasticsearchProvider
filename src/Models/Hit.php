@@ -25,7 +25,7 @@ class Hit
     private $id;
 
     /**
-     * @var double
+     * @var double|null
      */
     private $score;
 
@@ -83,17 +83,17 @@ class Hit
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getScore(): float
+    public function getScore(): ?float
     {
         return $this->score;
     }
 
     /**
-     * @param float $score
+     * @param float|null $score
      */
-    public function setScore(float $score)
+    public function setScore(?float $score)
     {
         $this->score = $score;
     }
