@@ -30,7 +30,7 @@ class SearchResult
     private $total;
 
     /**
-     * @var double
+     * @var double|null
      */
     private $max_score;
 
@@ -88,17 +88,17 @@ class SearchResult
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getMaxScore(): float
+    public function getMaxScore(): ?float
     {
         return $this->max_score;
     }
 
     /**
-     * @param float $max_score
+     * @param float|null $max_score
      */
-    public function setMaxScore(float $max_score)
+    public function setMaxScore(?float $max_score)
     {
         $this->max_score = $max_score;
     }
