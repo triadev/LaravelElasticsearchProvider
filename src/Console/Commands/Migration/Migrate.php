@@ -23,7 +23,7 @@ class Migrate extends Command
      *
      * @var string
      */
-    protected $signature = 'sc:elasticsearch:migrate
+    protected $signature = 'triadev:elasticsearch:migrate
                             {index : Index}
                             {from_version : From version}
                             {to_version : To version}

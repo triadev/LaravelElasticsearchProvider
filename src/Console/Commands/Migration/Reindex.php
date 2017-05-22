@@ -18,7 +18,7 @@ class Reindex extends Command
      *
      * @var string
      */
-    protected $signature = 'sc:elasticsearch:reindex
+    protected $signature = 'triadev:elasticsearch:reindex
                             {index : Index}
                             {from_version : From version}
                             {to_version : To version}';

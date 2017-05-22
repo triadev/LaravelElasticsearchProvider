@@ -21,7 +21,7 @@ class Activate extends Command
      *
      * @var string
      */
-    protected $signature = 'sc:elasticsearch:activate
+    protected $signature = 'triadev:elasticsearch:activate
                             {index : Index}
                             {from_version : From version}
                             {to_version : To version}';

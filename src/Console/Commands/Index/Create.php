@@ -20,7 +20,7 @@ class Create extends Command
      *
      * @var string
      */
-    protected $signature = 'sc:elasticsearch:index:create
+    protected $signature = 'triadev:elasticsearch:index:create
                             {index : Index}
                             {version : Version}';
 

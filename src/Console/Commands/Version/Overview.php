@@ -18,7 +18,7 @@ class Overview extends Command
      *
      * @var string
      */
-    protected $signature = 'sc:elasticsearch:version:overview
+    protected $signature = 'triadev:elasticsearch:version:overview
                             {index : Index}';
 
     /**

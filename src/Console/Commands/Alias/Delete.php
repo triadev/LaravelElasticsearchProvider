@@ -19,7 +19,7 @@ class Delete extends Command
      *
      * @var string
      */
-    protected $signature = 'sc:elasticsearch:alias:delete
+    protected $signature = 'triadev:elasticsearch:alias:delete
                             {index : Index}
                             {alias : Alias}
                             {version : Version}';

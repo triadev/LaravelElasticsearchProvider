@@ -18,7 +18,7 @@ class DeleteAll extends Command
      *
      * @var string
      */
-    protected $signature = 'sc:elasticsearch:index:delete:all';
+    protected $signature = 'triadev:elasticsearch:index:delete:all';
 
     /**
      * The console command description.
