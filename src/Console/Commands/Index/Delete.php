@@ -5,6 +5,7 @@ use Triadev\Es\Contract\ScElasticsearchIndexContract;
 use Triadev\Es\Exception\Index\IndexNotFoundException;
 use Illuminate\Console\Command;
 use Log;
+use Config;
 
 /**
  * Class Delete
@@ -20,7 +21,7 @@ class Delete extends Command
      * @var string
      */
     protected $signature = 'triadev:elasticsearch:index:delete
-                            {index : Index}
+                            {index : Index (_all for all)}
                             {version : Version}';
 
     /**
@@ -37,9 +38,16 @@ class Delete extends Command
      */
     public function handle(ScElasticsearchIndexContract $scElasticsearchIndex)
     {
-        $index = explode(',', $this->argument('index'));
         $version = $this->argument('version');
 
+        $indices = Config::get('sc-elasticsearch')['config']['indices'];
+
+        if ($this->argument('index') == '_all') {
+            $index = array_keys($indices);
+        } else {
+            $index = explode(',', $this->argument('index'));
+        }
+        
         try {
             $result = $scElasticsearchIndex->deleteIndex($index, $version);
 

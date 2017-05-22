@@ -21,7 +21,7 @@ class Create extends Command
      * @var string
      */
     protected $signature = 'triadev:elasticsearch:index:create
-                            {index : Index}
+                            {index : Index (_all for all)}
                             {version : Version}';
 
     /**
@@ -38,11 +38,16 @@ class Create extends Command
      */
     public function handle(ScElasticsearchIndexContract $scElasticsearchIndex)
     {
-        $index = explode(',', $this->argument('index'));
         $version = $this->argument('version');
 
         $indices = Config::get('sc-elasticsearch')['config']['indices'];
-
+        
+        if ($this->argument('index') == '_all') {
+            $index = array_keys($indices);
+        } else {
+            $index = explode(',', $this->argument('index'));
+        }
+        
         foreach ($index as $i) {
             if (!array_key_exists($i, $indices)) {
                 Log::info(sprintf("The index could not be found: %s", $i));

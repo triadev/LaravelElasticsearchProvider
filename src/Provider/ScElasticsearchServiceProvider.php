@@ -3,7 +3,6 @@ namespace Triadev\Es\Provider;
 
 use Triadev\Es\Console\Commands\Index\Create as CreateIndex;
 use Triadev\Es\Console\Commands\Index\Delete as DeleteIndex;
-use Triadev\Es\Console\Commands\Index\DeleteAll as DeleteAllIndexes;
 use Triadev\Es\Console\Commands\Alias\Create as CreateAlias;
 use Triadev\Es\Console\Commands\Alias\Delete as DeleteAlias;
 use Triadev\Es\Console\Commands\Migration\Activate;
@@ -52,7 +51,6 @@ class ScElasticsearchServiceProvider extends ServiceProvider
             $this->commands([
                 CreateIndex::class,
                 DeleteIndex::class,
-                DeleteAllIndexes::class,
                 CreateAlias::class,
                 DeleteAlias::class,
                 OverviewVersion::class,
