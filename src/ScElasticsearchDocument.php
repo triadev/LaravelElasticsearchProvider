@@ -99,4 +99,25 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
 
         return $this->esClient->getEsClient()->get($params);
     }
+
+    /**
+     * Mget documents
+     *
+     * @param string $index
+     * @param string $type
+     * @param array $params
+     * @param string|null $version
+     * @return array
+     */
+    public function mgetDocuments(
+        string $index,
+        string $type,
+        array $params = [],
+        string $version = null
+    ) : array {
+        $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
+        $params['type'] = $type;
+
+        return $this->esClient->getEsClient()->mget($params);
+    }
 }

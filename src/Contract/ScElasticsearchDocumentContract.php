@@ -60,4 +60,20 @@ interface ScElasticsearchDocumentContract
         string $id,
         string $version = null
     ) : array;
+
+    /**
+     * Mget documents
+     *
+     * @param string $index
+     * @param string $type
+     * @param array $params
+     * @param string|null $version
+     * @return array
+     */
+    public function mgetDocuments(
+        string $index,
+        string $type,
+        array $params = [],
+        string $version = null
+    ) : array;
 }
