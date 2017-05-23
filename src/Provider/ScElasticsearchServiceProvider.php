@@ -108,7 +108,8 @@ class ScElasticsearchServiceProvider extends ServiceProvider
             ScElasticsearchIndexContract::class,
             ScElasticsearchAliasContract::class,
             ScElasticsearchMappingContract::class,
-            ScElasticsearchDocumentContract::class
+            ScElasticsearchDocumentContract::class,
+            ScElasticsearchSearchContract::class
         ];
     }
 }

@@ -77,4 +77,26 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
 
         return $this->esClient->getEsClient()->delete($params);
     }
+
+    /**
+     * Get document
+     *
+     * @param string $index
+     * @param string $type
+     * @param string $id
+     * @param string|null $version
+     * @return array
+     */
+    public function getDocument(
+        string $index,
+        string $type,
+        string $id,
+        string $version = null
+    ) : array {
+        $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
+        $params['type'] = $type;
+        $params['id'] = $id;
+
+        return $this->esClient->getEsClient()->get($params);
+    }
 }

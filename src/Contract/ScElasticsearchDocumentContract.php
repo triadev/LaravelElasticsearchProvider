@@ -44,4 +44,20 @@ interface ScElasticsearchDocumentContract
         string $version = null,
         array $params = []
     ) : array;
+
+    /**
+     * Get document
+     *
+     * @param string $index
+     * @param string $type
+     * @param string $id
+     * @param string|null $version
+     * @return array
+     */
+    public function getDocument(
+        string $index,
+        string $type,
+        string $id,
+        string $version = null
+    ) : array;
 }
