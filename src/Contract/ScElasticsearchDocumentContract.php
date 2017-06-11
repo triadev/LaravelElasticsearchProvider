@@ -76,4 +76,22 @@ interface ScElasticsearchDocumentContract
         array $params = [],
         string $version = null
     ) : array;
+
+    /**
+     * Exist document
+     *
+     * @param string $index
+     * @param string $type
+     * @param string $id
+     * @param array $params
+     * @param string|null $version
+     * @return bool
+     */
+    public function existDocument(
+        string $index,
+        string $type,
+        string $id,
+        array $params = [],
+        string $version = null
+    ) : bool;
 }
