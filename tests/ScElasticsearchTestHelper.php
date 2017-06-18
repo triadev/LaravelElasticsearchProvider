@@ -42,4 +42,20 @@ trait ScElasticsearchTestHelper
     {
         return new \Triadev\Es\ScElasticsearchClient($this->generateConfigRepository());
     }
+
+    /**
+     * @return \Mockery\MockInterface
+     */
+    private function buildEsClientMock() : \Mockery\MockInterface
+    {
+        return Mockery::mock(\Elasticsearch\Client::class);
+    }
+
+    /**
+     * @return \Mockery\MockInterface
+     */
+    private function buildIndicesNamespaceMock() : \Mockery\MockInterface
+    {
+        return Mockery::mock(\Elasticsearch\Namespaces\IndicesNamespace::class);
+    }
 }

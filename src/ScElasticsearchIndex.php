@@ -1,7 +1,7 @@
 <?php
 namespace Triadev\Es;
 
-use Triadev\Es\Contract\ScElasticsearchClientContract;
+use Elasticsearch\Client;
 use Triadev\Es\Contract\ScElasticsearchIndexContract;
 use Triadev\Es\Exception\Index\IndexFoundException;
 use Triadev\Es\Exception\Index\IndexNotFoundException;
@@ -16,17 +16,17 @@ use Triadev\Es\Helper\VersionHelper;
 class ScElasticsearchIndex implements ScElasticsearchIndexContract
 {
     /**
-     * @var ScElasticsearchClientContract
+     * @var Client
      */
-    private $esClient;
+    private $client;
 
     /**
      * ScElasticsearchIndex constructor.
-     * @param ScElasticsearchClientContract $esClient
+     * @param Client $client
      */
-    public function __construct(ScElasticsearchClientContract $esClient)
+    public function __construct(Client $client)
     {
-        $this->esClient = $esClient;
+        $this->client = $client;
     }
 
     /**
@@ -43,7 +43,7 @@ class ScElasticsearchIndex implements ScElasticsearchIndexContract
         if (!$this->existIndex([$index], $version)) {
             $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
 
-            return $this->esClient->getEsClient()->indices()->create($params);
+            return $this->client->indices()->create($params);
         }
 
         throw new IndexFoundException($index, $version);
@@ -68,7 +68,7 @@ class ScElasticsearchIndex implements ScElasticsearchIndexContract
         }
 
         if (!empty($indices)) {
-            return $this->esClient->getEsClient()->indices()->delete([
+            return $this->client->indices()->delete([
                 'index' => implode(',', $indices)
             ]);
         }
@@ -83,7 +83,7 @@ class ScElasticsearchIndex implements ScElasticsearchIndexContract
      */
     public function deleteAllIndexes() : array
     {
-        return $this->esClient->getEsClient()->indices()->delete([
+        return $this->client->indices()->delete([
             'index' => '_all'
         ]);
     }
@@ -103,7 +103,7 @@ class ScElasticsearchIndex implements ScElasticsearchIndexContract
             $indices[] = VersionHelper::createIndexWithVersion($i, $version);
         }
 
-        return $this->esClient->getEsClient()->indices()->exists([
+        return $this->client->indices()->exists([
             'index' => implode(',', $indices)
         ]);
     }
@@ -116,7 +116,7 @@ class ScElasticsearchIndex implements ScElasticsearchIndexContract
      */
     public function getVersionedIndices(string $index) : array
     {
-        return array_keys($this->esClient->getEsClient()->indices()->get([
+        return array_keys($this->client->indices()->get([
             'index' => sprintf("%s_*", $index)
         ]));
     }
@@ -141,6 +141,6 @@ class ScElasticsearchIndex implements ScElasticsearchIndexContract
             ]
         ];
 
-        return $this->esClient->getEsClient()->reindex($params);
+        return $this->client->reindex($params);
     }
 }

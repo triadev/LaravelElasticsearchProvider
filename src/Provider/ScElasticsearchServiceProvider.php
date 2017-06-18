@@ -85,20 +85,20 @@ class ScElasticsearchServiceProvider extends ServiceProvider
         $scElasticsearchClient = app(ScElasticsearchClientContract::class);
         $client = $scElasticsearchClient->getEsClient();
 
-        $this->app->singleton(ScElasticsearchIndexContract::class, function () {
-            return new ScElasticsearchIndex(app(ScElasticsearchClientContract::class));
+        $this->app->singleton(ScElasticsearchIndexContract::class, function () use ($client) {
+            return new ScElasticsearchIndex($client);
         });
 
         $this->app->singleton(ScElasticsearchAliasContract::class, function () use ($client) {
             return new ScElasticsearchAlias($client);
         });
 
-        $this->app->singleton(ScElasticsearchDocumentContract::class, function () {
-            return new ScElasticsearchDocument(app(ScElasticsearchClientContract::class));
+        $this->app->singleton(ScElasticsearchDocumentContract::class, function () use ($client) {
+            return new ScElasticsearchDocument($client);
         });
 
-        $this->app->singleton(ScElasticsearchSearchContract::class, function () {
-            return new ScElasticsearchSearch(app(ScElasticsearchClientContract::class));
+        $this->app->singleton(ScElasticsearchSearchContract::class, function () use ($client) {
+            return new ScElasticsearchSearch($client);
         });
 
         $this->app->singleton(ScElasticsearchMappingContract::class, function () {

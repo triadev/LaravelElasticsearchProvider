@@ -1,7 +1,7 @@
 <?php
 namespace Triadev\Es;
 
-use Triadev\Es\Contract\ScElasticsearchClientContract;
+use Elasticsearch\Client;
 use Triadev\Es\Contract\ScElasticsearchSearchContract;
 use Triadev\Es\Models\Hit;
 use Triadev\Es\Models\SearchResult;
@@ -16,17 +16,17 @@ use Triadev\Es\Models\Shards;
 class ScElasticsearchSearch implements ScElasticsearchSearchContract
 {
     /**
-     * @var ScElasticsearchClientContract
+     * @var Client
      */
-    private $esClient;
+    private $client;
 
     /**
      * ScElasticsearchIndex constructor.
-     * @param ScElasticsearchClientContract $esClient
+     * @param Client $client
      */
-    public function __construct(ScElasticsearchClientContract $esClient)
+    public function __construct(Client $client)
     {
-        $this->esClient = $esClient;
+        $this->client = $client;
     }
 
     /**
@@ -50,7 +50,7 @@ class ScElasticsearchSearch implements ScElasticsearchSearchContract
         $params['type'] = implode(',', $type);
         $params['body'] = $body;
 
-        $result = $this->esClient->getEsClient()->search($params);
+        $result = $this->client->search($params);
         
         if (!$raw) {
             $searchResult = new SearchResult();

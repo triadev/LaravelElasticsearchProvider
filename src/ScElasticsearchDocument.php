@@ -1,7 +1,7 @@
 <?php
 namespace Triadev\Es;
 
-use Triadev\Es\Contract\ScElasticsearchClientContract;
+use Elasticsearch\Client;
 use Triadev\Es\Contract\ScElasticsearchDocumentContract;
 use Triadev\Es\Helper\VersionHelper;
 
@@ -14,17 +14,17 @@ use Triadev\Es\Helper\VersionHelper;
 class ScElasticsearchDocument implements ScElasticsearchDocumentContract
 {
     /**
-     * @var ScElasticsearchClientContract
+     * @var Client
      */
-    private $esClient;
+    private $client;
 
     /**
      * ScElasticsearchIndex constructor.
-     * @param ScElasticsearchClientContract $esClient
+     * @param Client $client
      */
-    public function __construct(ScElasticsearchClientContract $esClient)
+    public function __construct(Client $client)
     {
-        $this->esClient = $esClient;
+        $this->client = $client;
     }
 
     /**
@@ -51,7 +51,7 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
             $params['id'] = $id;
         }
 
-        return $this->esClient->getEsClient()->index($params);
+        return $this->client->index($params);
     }
 
     /**
@@ -75,7 +75,7 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
         $params['type'] = $type;
         $params['id'] = $id;
 
-        return $this->esClient->getEsClient()->delete($params);
+        return $this->client->delete($params);
     }
 
     /**
@@ -97,7 +97,7 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
         $params['type'] = $type;
         $params['id'] = $id;
 
-        return $this->esClient->getEsClient()->get($params);
+        return $this->client->get($params);
     }
 
     /**
@@ -118,7 +118,7 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
         $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
         $params['type'] = $type;
 
-        return $this->esClient->getEsClient()->mget($params);
+        return $this->client->mget($params);
     }
 
     /**
@@ -142,6 +142,6 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
         $params['type'] = $type;
         $params['id'] = $id;
 
-        return (bool)$this->esClient->getEsClient()->exists($params);
+        return (bool)$this->client->exists($params);
     }
 }
