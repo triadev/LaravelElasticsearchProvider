@@ -1,8 +1,8 @@
 <?php
 namespace Triadev\Es;
 
+use Elasticsearch\Client;
 use Triadev\Es\Contract\ScElasticsearchAliasContract;
-use Triadev\Es\Contract\ScElasticsearchClientContract;
 use Triadev\Es\Exception\Alias\AliasFoundException;
 use Triadev\Es\Exception\Alias\AliasNotFoundException;
 use Triadev\Es\Helper\VersionHelper;
@@ -16,17 +16,17 @@ use Triadev\Es\Helper\VersionHelper;
 class ScElasticsearchAlias implements ScElasticsearchAliasContract
 {
     /**
-     * @var ScElasticsearchClientContract
+     * @var Client
      */
-    private $esClient;
+    private $client;
 
     /**
      * ScElasticsearchIndex constructor.
-     * @param ScElasticsearchClientContract $esClient
+     * @param Client $client
      */
-    public function __construct(ScElasticsearchClientContract $esClient)
+    public function __construct(Client $client)
     {
-        $this->esClient = $esClient;
+        $this->client = $client;
     }
 
     /**
@@ -41,7 +41,7 @@ class ScElasticsearchAlias implements ScElasticsearchAliasContract
     public function addAlias(string $index, string $alias, string $version = null) : array
     {
         if (!$this->existAlias([$index], [$alias], $version)) {
-            return $this->esClient->getEsClient()->indices()->putAlias([
+            return $this->client->indices()->putAlias([
                 'index' => VersionHelper::createIndexWithVersion($index, $version),
                 'name' => $alias
             ]);
@@ -62,7 +62,7 @@ class ScElasticsearchAlias implements ScElasticsearchAliasContract
     public function deleteAlias(string $index, string $alias, string $version = null) : array
     {
         if ($this->existAlias([$index], [$alias], $version)) {
-            return $this->esClient->getEsClient()->indices()->deleteAlias([
+            return $this->client->indices()->deleteAlias([
                 'index' => VersionHelper::createIndexWithVersion($index, $version),
                 'name' => $alias
             ]);
@@ -90,6 +90,6 @@ class ScElasticsearchAlias implements ScElasticsearchAliasContract
         }
         $params['index'] = implode(',', $indices);
 
-        return $this->esClient->getEsClient()->indices()->existsAlias($params);
+        return $this->client->indices()->existsAlias($params);
     }
 }

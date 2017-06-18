@@ -1,11 +1,13 @@
 <?php
 namespace Triadev\Es;
 
+use Monolog\Logger;
 use Triadev\Es\Contract\ScElasticsearchClientContract;
 use Config;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 use Log;
+use Triadev\Es\Repository\ConfigRepository;
 
 /**
  * Class ScElasticsearchClient
@@ -22,20 +24,22 @@ class ScElasticsearchClient implements ScElasticsearchClientContract
 
     /**
      * FlElasticsearch constructor.
+     *
+     * @param ConfigRepository $config
+     * @param Logger|null $logger
      */
-    public function __construct()
+    public function __construct(ConfigRepository $config, ?Logger $logger = null)
     {
-        $config = Config::get('sc-elasticsearch');
-
-        $this->buildElasticsearchClient($config);
+        $this->buildElasticsearchClient($config->getConfig(), $logger);
     }
 
     /**
      * Build elasticsearch client
      *
      * @param array $config
+     * @param Logger|null $logger
      */
-    private function buildElasticsearchClient(array $config)
+    private function buildElasticsearchClient(array $config, ?Logger $logger = null)
     {
         $clientBuilder = ClientBuilder::create();
         $clientBuilder->setHosts([
@@ -48,7 +52,9 @@ class ScElasticsearchClient implements ScElasticsearchClientContract
             ]
         ]);
         $clientBuilder->setRetries($config['config']['retries']);
-        $clientBuilder->setLogger(Log::getMonolog());
+        if ($logger) {
+            $clientBuilder->setLogger($logger);
+        }
 
         $this->client = $clientBuilder->build();
     }

@@ -15,6 +15,7 @@ use Triadev\Es\Contract\ScElasticsearchDocumentContract;
 use Triadev\Es\Contract\ScElasticsearchIndexContract;
 use Triadev\Es\Contract\ScElasticsearchMappingContract;
 use Triadev\Es\Contract\ScElasticsearchSearchContract;
+use Triadev\Es\Repository\ConfigRepository;
 use Triadev\Es\ScElasticsearchAlias;
 use Triadev\Es\ScElasticsearchClient;
 use Triadev\Es\ScElasticsearchDocument;
@@ -22,6 +23,8 @@ use Triadev\Es\ScElasticsearchIndex;
 use Triadev\Es\ScElasticsearchMapping;
 use Illuminate\Support\ServiceProvider;
 use Triadev\Es\ScElasticsearchSearch;
+use Config;
+use Log;
 
 /**
  * Class ScElasticsearchServiceProvider
@@ -68,16 +71,26 @@ class ScElasticsearchServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(ScElasticsearchClientContract::class, function () {
-            return new ScElasticsearchClient();
+        $configRepository = new ConfigRepository(
+            Config::get('sc-elasticsearch')
+        );
+
+        $logger = Log::getMonolog();
+
+        $this->app->singleton(ScElasticsearchClientContract::class, function () use ($configRepository, $logger) {
+            return new ScElasticsearchClient($configRepository, $logger);
         });
+
+        /** @var ScElasticsearchClientContract $scElasticsearchClient */
+        $scElasticsearchClient = app(ScElasticsearchClientContract::class);
+        $client = $scElasticsearchClient->getEsClient();
 
         $this->app->singleton(ScElasticsearchIndexContract::class, function () {
             return new ScElasticsearchIndex(app(ScElasticsearchClientContract::class));
         });
 
-        $this->app->singleton(ScElasticsearchAliasContract::class, function () {
-            return new ScElasticsearchAlias(app(ScElasticsearchClientContract::class));
+        $this->app->singleton(ScElasticsearchAliasContract::class, function () use ($client) {
+            return new ScElasticsearchAlias($client);
         });
 
         $this->app->singleton(ScElasticsearchDocumentContract::class, function () {
