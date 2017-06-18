@@ -4,6 +4,7 @@
 [![Latest stable][ico-version-stable]][link-packagist]
 [![Latest development][ico-version-dev]][link-packagist]
 [![Monthly installs][ico-downloads-monthly]][link-downloads]
+[![Travis][ico-travis]][link-travis]
 
 A service provider for laravel to managing data versions in elasticsearch.
 
@@ -62,6 +63,8 @@ The code for LaravelElasticsearchProvider is distributed under the terms of the 
 [ico-version-stable]: https://img.shields.io/packagist/v/triadev/laravel-elasticsearch-provider.svg?style=flat-square
 [ico-version-dev]: https://img.shields.io/packagist/vpre/triadev/laravel-elasticsearch-provider.svg?style=flat-square
 [ico-downloads-monthly]: https://img.shields.io/packagist/dm/triadev/laravel-elasticsearch-provider.svg?style=flat-square
+[ico-travis]: https://travis-ci.org/triadev/LaravelElasticsearchProvider.svg?branch=master
 
 [link-packagist]: https://packagist.org/packages/triadev/laravel-elasticsearch-provider
 [link-downloads]: https://packagist.org/packages/triadev/laravel-elasticsearch-provider/stats
+[link-travis]: https://travis-ci.org/triadev/LaravelElasticsearchProvider
