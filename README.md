@@ -12,6 +12,7 @@ A service provider for laravel to managing data versions in elasticsearch.
 - Laravel (>= 5.4) support for elasticsearch (>= 5.2)
 - Migration
 - Versioning
+- Deploy
 
 ## Installation
 

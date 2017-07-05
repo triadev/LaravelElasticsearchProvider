@@ -6,6 +6,7 @@ use Triadev\Es\Console\Commands\Index\Delete as DeleteIndex;
 use Triadev\Es\Console\Commands\Alias\Create as CreateAlias;
 use Triadev\Es\Console\Commands\Alias\Delete as DeleteAlias;
 use Triadev\Es\Console\Commands\Migration\Activate;
+use Triadev\Es\Console\Commands\Migration\Deploy;
 use Triadev\Es\Console\Commands\Migration\Migrate;
 use Triadev\Es\Console\Commands\Migration\Reindex;
 use Triadev\Es\Console\Commands\Version\Overview as OverviewVersion;
@@ -58,6 +59,7 @@ class ScElasticsearchServiceProvider extends ServiceProvider
                 DeleteAlias::class,
                 OverviewVersion::class,
                 Migrate::class,
+                Deploy::class,
                 Reindex::class,
                 Activate::class
             ]);

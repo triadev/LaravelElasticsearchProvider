@@ -6,6 +6,11 @@ return [
     'scheme' => env('ELASTICSEARCH_SCHEME', 'https'),
     'user' => env('ELASTICSEARCH_USER', ''),
     'pass' => env('ELASTICSEARCH_PASS', ''),
+    'deploy' => [
+        'version' => [
+            'indices' => []
+        ]
+    ],
     'config' => [
         'retries' => 2,
         'indices' => []
