@@ -46,22 +46,24 @@ class Deploy extends Command
             $from_version = $version['indices'][$index]['from'];
             $to_version = $version['indices'][$index]['to'];
             if ($this->isToVersionHigherThenOldVersion($from_version, $to_version)) {
-                if ($scElasticsearchIndex->existIndex([$index], $from_version)) {
+                if ($from_version == '0.0.0' || $scElasticsearchIndex->existIndex([$index], $from_version)) {
                     if (!$scElasticsearchIndex->existIndex([$index], $to_version)) {
                         $indices = Config::get('sc-elasticsearch')['config']['indices'];
                         if (array_key_exists($index, $indices)) {
                             $this->createIndex($scElasticsearchIndex, $index, $indices[$index], $to_version);
-                            if ($scElasticsearchIndex->existIndex([$index], $to_version)) {
-                                try {
-                                    $result = $scElasticsearchIndex->reindex($index, $from_version, $to_version);
-                                    Log::info('The indices could be reindex.', $result);
-                                } catch (\Exception $e) {
-                                    Log::error(sprintf(
-                                        "The indices could not be reindex: %s",
-                                        $e->getMessage()
-                                    ), $index);
+                            if ($from_version != '0.0.0') {
+                                if ($scElasticsearchIndex->existIndex([$index], $to_version)) {
+                                    try {
+                                        $result = $scElasticsearchIndex->reindex($index, $from_version, $to_version);
+                                        Log::info('The indices could be reindex.', $result);
+                                    } catch (\Exception $e) {
+                                        Log::error(sprintf(
+                                            "The indices could not be reindex: %s",
+                                            $e->getMessage()
+                                        ), $index);
 
-                                    $scElasticsearchIndex->deleteIndex([$index], $to_version);
+                                        $scElasticsearchIndex->deleteIndex([$index], $to_version);
+                                    }
                                 }
                             }
                         } else {
