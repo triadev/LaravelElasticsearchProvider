@@ -18,6 +18,7 @@ interface ScElasticsearchSearchContract
      * @param array $type
      * @param array $body
      * @param array $params
+     * @param string|null $version
      * @param bool $raw
      * @return array|SearchResult
      */
@@ -26,6 +27,7 @@ interface ScElasticsearchSearchContract
         array $type,
         array $body = [],
         array $params = [],
+        string $version = null,
         bool $raw = false
     );
 }

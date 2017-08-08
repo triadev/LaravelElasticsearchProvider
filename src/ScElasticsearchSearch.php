@@ -3,6 +3,7 @@ namespace Triadev\Es;
 
 use Elasticsearch\Client;
 use Triadev\Es\Contract\ScElasticsearchSearchContract;
+use Triadev\Es\Helper\VersionHelper;
 use Triadev\Es\Models\Hit;
 use Triadev\Es\Models\SearchResult;
 use Triadev\Es\Models\Shards;
@@ -36,6 +37,7 @@ class ScElasticsearchSearch implements ScElasticsearchSearchContract
      * @param array $type
      * @param array $body
      * @param array $params
+     * @param string|null $version
      * @param bool $raw
      * @return array|SearchResult
      */
@@ -44,14 +46,20 @@ class ScElasticsearchSearch implements ScElasticsearchSearchContract
         array $type,
         array $body = [],
         array $params = [],
+        string $version = null,
         bool $raw = false
     ) {
-        $params['index'] = implode(',', $index);
+        $indices = [];
+        foreach ($index as $i) {
+            $indices[] = VersionHelper::createIndexWithVersion($i, $version);
+        }
+
+        $params['index'] = implode(',', $indices);
         $params['type'] = implode(',', $type);
         $params['body'] = $body;
 
         $result = $this->client->search($params);
-        
+
         if (!$raw) {
             $searchResult = new SearchResult();
             $searchResult->setTook($result['took']);
