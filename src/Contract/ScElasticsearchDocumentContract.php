@@ -46,6 +46,24 @@ interface ScElasticsearchDocumentContract
     ) : array;
 
     /**
+     * Delete documents by query
+     *
+     * @param string $index
+     * @param string $type
+     * @param array $body
+     * @param string|null $version
+     * @param array $params
+     * @return array
+     */
+    public function deleteDocumentsByQuery(
+        string $index,
+        string $type,
+        array $body = [],
+        string $version = null,
+        array $params = []
+    ) : array;
+
+    /**
      * Get document
      *
      * @param string $index

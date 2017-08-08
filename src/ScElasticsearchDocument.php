@@ -79,6 +79,30 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
     }
 
     /**
+     * Delete documents by query
+     *
+     * @param string $index
+     * @param string $type
+     * @param array $body
+     * @param string|null $version
+     * @param array $params
+     * @return array
+     */
+    public function deleteDocumentsByQuery(
+        string $index,
+        string $type,
+        array $body = [],
+        string $version = null,
+        array $params = []
+    ): array {
+        $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
+        $params['type'] = $type;
+        $params['body'] = $body;
+
+        return $this->client->deleteByQuery($params);
+    }
+
+    /**
      * Get document
      *
      * @param string $index
