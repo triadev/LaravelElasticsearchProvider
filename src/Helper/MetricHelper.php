@@ -1,7 +1,7 @@
 <?php
 namespace Triadev\Es\Helper;
 
-use Tfw\Lpe\Facade\LpeManagerFacade;
+use Triadev\PrometheusExporter\Facade\PrometheusExporterFacade;
 
 /**
  * Class MetricHelper
@@ -41,9 +41,9 @@ class MetricHelper
     public static function setRequestDurationHistogram(int $durationInMilliseconds, string $handler)
     {
         if (env('APP_ENV') != 'testing') {
-            LpeManagerFacade::setHistogram(
+            PrometheusExporterFacade::setHistogram(
                 'query_duration_milliseconds',
-                'Get the request duration for an es query.',
+                'Get the request duration for an elasticsearch query.',
                 $durationInMilliseconds,
                 'elasticsearch',
                 [

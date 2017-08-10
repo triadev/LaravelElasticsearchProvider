@@ -26,6 +26,7 @@ use Illuminate\Support\ServiceProvider;
 use Triadev\Es\ScElasticsearchSearch;
 use Config;
 use Log;
+use Triadev\PrometheusExporter\Provider\PrometheusExporterServiceProvider;
 
 /**
  * Class ScElasticsearchServiceProvider
@@ -73,6 +74,8 @@ class ScElasticsearchServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->register(PrometheusExporterServiceProvider::class);
+
         $configRepository = new ConfigRepository(
             Config::get('sc-elasticsearch')
         );
