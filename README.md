@@ -13,6 +13,7 @@ A service provider for laravel to managing data versions in elasticsearch.
 - Migration
 - Versioning
 - Deploy
+- Metrics
 
 ## Installation
 
@@ -42,6 +43,9 @@ This will create a file ```config/sc-elasticsearch.php```.
 | ELASTICSEARCH_SCHEME | STRING | https or http |
 | ELASTICSEARCH_USER | STRING | Username |
 | ELASTICSEARCH_PASS | STRING | Password |
+
+## Metrics
+* elasticsearch_query_duration_milliseconds (Histogram)
 
 ## Reporting Issues
 If you do find an issue, please feel free to report it with GitHub's bug tracker for this project.
