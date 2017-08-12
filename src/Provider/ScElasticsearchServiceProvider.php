@@ -76,8 +76,13 @@ class ScElasticsearchServiceProvider extends ServiceProvider
     {
         $this->app->register(PrometheusExporterServiceProvider::class);
 
+        $this->mergeConfigFrom(
+            realpath(__DIR__ . '/../Config/config.php'),
+            'sc-elasticsearch'
+        );
+
         $configRepository = new ConfigRepository(
-            Config::get('sc-elasticsearch')
+            config('sc-elasticsearch')
         );
 
         $logger = Log::getMonolog();
