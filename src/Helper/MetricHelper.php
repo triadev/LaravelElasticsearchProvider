@@ -40,7 +40,7 @@ class MetricHelper
      */
     public static function setRequestDurationHistogram(int $durationInMilliseconds, string $handler)
     {
-        if (env('APP_ENV') != 'testing') {
+        if (env('APP_ENV') != 'testing' && php_sapi_name() !== 'cli') {
             PrometheusExporterFacade::setHistogram(
                 'query_duration_milliseconds',
                 'Get the request duration for an elasticsearch query.',
