@@ -85,7 +85,7 @@ class ScElasticsearchServiceProvider extends ServiceProvider
             config('sc-elasticsearch')
         );
 
-        $logger = Log::getMonolog();
+        $logger = Log::getLogger();
 
         $this->app->singleton(ScElasticsearchClientContract::class, function () use ($configRepository, $logger) {
             return new ScElasticsearchClient($configRepository, $logger);
