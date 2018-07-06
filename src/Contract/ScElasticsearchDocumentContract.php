@@ -26,7 +26,25 @@ interface ScElasticsearchDocumentContract
         array $params = [],
         ?string $id = null
     ) : array;
-
+    
+    /**
+     * Update document
+     *
+     * @param string $index
+     * @param string $type
+     * @param string|null $version
+     * @param array $params
+     * @param string $id
+     * @return array
+     */
+    public function updateDocument(
+        string $index,
+        string $type,
+        string $version = null,
+        array $params = [],
+        string $id
+    ) : array;
+    
     /**
      * Delete document
      *
@@ -44,7 +62,7 @@ interface ScElasticsearchDocumentContract
         string $version = null,
         array $params = []
     ) : array;
-
+    
     /**
      * Delete documents by query
      *
@@ -62,7 +80,7 @@ interface ScElasticsearchDocumentContract
         string $version = null,
         array $params = []
     ) : array;
-
+    
     /**
      * Get document
      *
@@ -78,7 +96,7 @@ interface ScElasticsearchDocumentContract
         string $id,
         string $version = null
     ) : array;
-
+    
     /**
      * Mget documents
      *
@@ -94,7 +112,7 @@ interface ScElasticsearchDocumentContract
         array $params = [],
         string $version = null
     ) : array;
-
+    
     /**
      * Exist document
      *
@@ -112,4 +130,20 @@ interface ScElasticsearchDocumentContract
         array $params = [],
         string $version = null
     ) : bool;
+    
+    /**
+     * Count document
+     *
+     * @param string $index
+     * @param string $type
+     * @param array $params
+     * @param string|null $version
+     * @return int
+     */
+    public function countDocuments(
+        string $index,
+        string $type,
+        array $params = [],
+        string $version = null
+    ) : int;
 }

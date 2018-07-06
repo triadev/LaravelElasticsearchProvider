@@ -18,7 +18,7 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
      * @var Client
      */
     private $client;
-
+    
     /**
      * ScElasticsearchIndex constructor.
      * @param Client $client
@@ -27,7 +27,7 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
     {
         $this->client = $client;
     }
-
+    
     /**
      * Create document
      *
@@ -46,24 +46,57 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
         ?string $id = null
     ) : array {
         $requestStartTime = MetricHelper::getRequestStartTime();
-
+        
         $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
         $params['type'] = $type;
-
+        
         if ($id) {
             $params['id'] = $id;
         }
-
+        
         $result = $this->client->index($params);
-
+        
         MetricHelper::setRequestDurationHistogram(
             MetricHelper::getRequestEndTimeInMilliseconds($requestStartTime),
             'createDocument'
         );
-
+        
         return $result;
     }
-
+    
+    /**
+     * Update document
+     *
+     * @param string $index
+     * @param string $type
+     * @param string|null $version
+     * @param array $params
+     * @param string $id
+     * @return array
+     */
+    public function updateDocument(
+        string $index,
+        string $type,
+        string $version = null,
+        array $params = [],
+        string $id
+    ) : array {
+        $requestStartTime = MetricHelper::getRequestStartTime();
+        
+        $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
+        $params['type'] = $type;
+        $params['id'] = $id;
+        
+        $result = $this->client->update($params);
+        
+        MetricHelper::setRequestDurationHistogram(
+            MetricHelper::getRequestEndTimeInMilliseconds($requestStartTime),
+            'updateDocument'
+        );
+        
+        return $result;
+    }
+    
     /**
      * Delete document
      *
@@ -82,21 +115,21 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
         array $params = []
     ) : array {
         $requestStartTime = MetricHelper::getRequestStartTime();
-
+        
         $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
         $params['type'] = $type;
         $params['id'] = $id;
-
+        
         $result = $this->client->delete($params);
-
+        
         MetricHelper::setRequestDurationHistogram(
             MetricHelper::getRequestEndTimeInMilliseconds($requestStartTime),
             'deleteDocument'
         );
-
+        
         return $result;
     }
-
+    
     /**
      * Delete documents by query
      *
@@ -115,21 +148,21 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
         array $params = []
     ): array {
         $requestStartTime = MetricHelper::getRequestStartTime();
-
+        
         $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
         $params['type'] = $type;
         $params['body'] = $body;
-
+        
         $result = $this->client->deleteByQuery($params);
-
+        
         MetricHelper::setRequestDurationHistogram(
             MetricHelper::getRequestEndTimeInMilliseconds($requestStartTime),
             'deleteDocumentsByQuery'
         );
-
+        
         return $result;
     }
-
+    
     /**
      * Get document
      *
@@ -146,21 +179,21 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
         string $version = null
     ) : array {
         $requestStartTime = MetricHelper::getRequestStartTime();
-
+        
         $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
         $params['type'] = $type;
         $params['id'] = $id;
-
+        
         $result = $this->client->get($params);
-
+        
         MetricHelper::setRequestDurationHistogram(
             MetricHelper::getRequestEndTimeInMilliseconds($requestStartTime),
             'getDocument'
         );
-
+        
         return $result;
     }
-
+    
     /**
      * Mget documents
      *
@@ -177,20 +210,20 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
         string $version = null
     ) : array {
         $requestStartTime = MetricHelper::getRequestStartTime();
-
+        
         $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
         $params['type'] = $type;
-
+        
         $result = $this->client->mget($params);
-
+        
         MetricHelper::setRequestDurationHistogram(
             MetricHelper::getRequestEndTimeInMilliseconds($requestStartTime),
             'mgetDocuments'
         );
-
+        
         return $result;
     }
-
+    
     /**
      * Exist document
      *
@@ -209,18 +242,48 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
         string $version = null
     ) : bool {
         $requestStartTime = MetricHelper::getRequestStartTime();
-
+        
         $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
         $params['type'] = $type;
         $params['id'] = $id;
-
+        
         $result = (bool)$this->client->exists($params);
-
+        
         MetricHelper::setRequestDurationHistogram(
             MetricHelper::getRequestEndTimeInMilliseconds($requestStartTime),
             'existDocument'
         );
-
+        
         return $result;
+    }
+    
+    /**
+     * Count document
+     *
+     * @param string $index
+     * @param string $type
+     * @param array $params
+     * @param string|null $version
+     * @return int
+     */
+    public function countDocuments(
+        string $index,
+        string $type,
+        array $params = [],
+        string $version = null
+    ): int {
+        $requestStartTime = MetricHelper::getRequestStartTime();
+        
+        $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
+        $params['type'] = $type;
+        
+        $result = $this->client->count($params);
+        
+        MetricHelper::setRequestDurationHistogram(
+            MetricHelper::getRequestEndTimeInMilliseconds($requestStartTime),
+            'countDocuments'
+        );
+        
+        return $result['count'];
     }
 }
