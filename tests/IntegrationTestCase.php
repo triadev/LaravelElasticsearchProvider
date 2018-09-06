@@ -3,17 +3,12 @@ namespace Tests;
 
 class IntegrationTestCase extends TestCase
 {
-    /** @var array */
-    private $mapping;
-    
     /**
      * Setup the test environment.
      */
     public function setUp()
     {
         parent::setUp();
-        
-        $this->mapping = include __DIR__ . '/integration/mapping.php';
     }
     
     /**
@@ -33,7 +28,10 @@ class IntegrationTestCase extends TestCase
             'pass' => '',
             'deploy' => [
                 'version' => [
-                    'indices' => []
+                    'indices' => [
+                        'from' => '0.0.0',
+                        'to' => '1.0.0'
+                    ]
                 ]
             ],
             'snapshot' => [
@@ -43,13 +41,26 @@ class IntegrationTestCase extends TestCase
             ],
             'config' => [
                 'retries' => 2,
-                'indices' => []
+                'indices' => [
+                    'phpunit' => $this->getMapping()
+                ]
             ]
         ]);
     }
     
-    protected function getMapping() : array
+    public function getMapping() : array
     {
-        return $this->mapping;
+        return [
+            'mappings' => [
+                'phpunit' => [
+                    'dynamic' => 'strict',
+                    'properties' => [
+                        'title' => [
+                            'type' => 'text'
+                        ]
+                    ]
+                ]
+            ]
+        ];
     }
 }

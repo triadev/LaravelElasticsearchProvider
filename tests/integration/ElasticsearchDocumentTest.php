@@ -19,9 +19,10 @@ class ElasticsearchDocumentTest extends IntegrationTestCase
         
         $indexService->deleteAllIndexes();
     
-        $indexService->createIndex('phpunit', [
-            'body' => $this->getMapping()
-        ], '1.0.0');
+        $this->artisan('triadev:es:index:create', [
+            'index' => 'phpunit',
+            'version' => '1.0.0'
+        ]);
     
         $this->assertTrue($indexService->existIndex(['phpunit'], '1.0.0'));
         
