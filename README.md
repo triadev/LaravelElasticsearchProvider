@@ -53,7 +53,7 @@ Alternatively, fork the project and make a pull request. :)
 ## Test
 
 1. docker-compose up
-2. docker exec fpm ./vendor/phpunit/phpunit/phpunit
+2. ./vendor/phpunit/phpunit/phpunit
 
 ## Other
 
