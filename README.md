@@ -1,10 +1,12 @@
 # LaravelElasticsearchProvider
 
 [![Software license][ico-license]](LICENSE)
+[![Travis][ico-travis]][link-travis]
+[![Coveralls](https://coveralls.io/repos/github/triadev/LaravelElasticsearchProvider/badge.svg?branch=master)](https://coveralls.io/github/triadev/LaravelElasticsearchProvider?branch=master)
+[![CodeCov](https://codecov.io/gh/triadev/LaravelElasticsearchProvider/branch/master/graph/badge.svg)](https://codecov.io/gh/triadev/LaravelElasticsearchProvider)
 [![Latest stable][ico-version-stable]][link-packagist]
 [![Latest development][ico-version-dev]][link-packagist]
 [![Monthly installs][ico-downloads-monthly]][link-downloads]
-[![Travis][ico-travis]][link-travis]
 
 A service provider for laravel to managing data versions in elasticsearch.
 
@@ -13,7 +15,6 @@ A service provider for laravel to managing data versions in elasticsearch.
 - Migration
 - Versioning
 - Deploy
-- Metrics
 
 ## Installation
 
@@ -24,16 +25,16 @@ A service provider for laravel to managing data versions in elasticsearch.
 Register the service provider in the config/app.php (Laravel) or in the bootstrap/app.php (Lumen).
 ```
 'providers' => [
-    \Triadev\Es\Provider\ScElasticsearchServiceProvider::class
+    \Triadev\Es\Provider\ElasticsearchServiceProvider::class
 ]
 ```
 
 Once installed you can now publish your config file and set your correct configuration for using the package.
 ```php
-php artisan vendor:publish --provider="Triadev\Es\Provider\ScElasticsearchServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Triadev\Es\Provider\ElasticsearchServiceProvider" --tag="config"
 ```
 
-This will create a file ```config/sc-elasticsearch.php```.
+This will create a file ```config/triadev-elasticsearch.php```.
 
 ## Configuration
 | Key        | Value           | Description  |
@@ -44,13 +45,15 @@ This will create a file ```config/sc-elasticsearch.php```.
 | ELASTICSEARCH_USER | STRING | Username |
 | ELASTICSEARCH_PASS | STRING | Password |
 
-## Metrics
-* elasticsearch_query_duration_milliseconds (Histogram)
-
 ## Reporting Issues
 If you do find an issue, please feel free to report it with GitHub's bug tracker for this project.
 
 Alternatively, fork the project and make a pull request. :)
+
+## Test
+
+1. docker-compose up
+2. docker exec fpm ./vendor/phpunit/phpunit/phpunit
 
 ## Other
 

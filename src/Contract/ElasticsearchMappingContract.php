@@ -3,13 +3,7 @@ namespace Triadev\Es\Contract;
 
 use Triadev\Es\Exception\Index\IndexNotFoundException;
 
-/**
- * Interface ScElasticsearchMappingContract
- *
- * @author Christopher Lorke <lorke@traum-ferienwohnungen.de>
- * @package Triadev\Es\Contract
- */
-interface ScElasticsearchMappingContract
+interface ElasticsearchMappingContract
 {
     /**
      * Update mapping

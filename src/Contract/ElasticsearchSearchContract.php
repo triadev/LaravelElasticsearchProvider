@@ -3,13 +3,7 @@ namespace Triadev\Es\Contract;
 
 use Triadev\Es\Models\SearchResult;
 
-/**
- * Interface ScElasticsearchSearchContract
- *
- * @author Christopher Lorke <lorke@traum-ferienwohnungen.de>
- * @package Triadev\Es\Contract
- */
-interface ScElasticsearchSearchContract
+interface ElasticsearchSearchContract
 {
     /**
      * Search
@@ -28,6 +22,24 @@ interface ScElasticsearchSearchContract
         array $body = [],
         array $params = [],
         string $version = null,
+        bool $raw = false
+    );
+
+    /**
+     * Scroll
+     *
+     * @param string $scrollId
+     * @param string $scroll
+     * @param array $body
+     * @param array $params
+     * @param bool $raw
+     * @return array|SearchResult
+     */
+    public function scroll(
+        string $scrollId,
+        string $scroll,
+        array $body = [],
+        array $params = [],
         bool $raw = false
     );
 }

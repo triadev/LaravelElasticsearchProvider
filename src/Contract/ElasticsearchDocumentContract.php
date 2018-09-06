@@ -1,13 +1,7 @@
 <?php
 namespace Triadev\Es\Contract;
 
-/**
- * Interface ScElasticsearchDocumentContract
- *
- * @author Christopher Lorke <lorke@traum-ferienwohnungen.de>
- * @package Triadev\Es\Contract
- */
-interface ScElasticsearchDocumentContract
+interface ElasticsearchDocumentContract
 {
     /**
      * Create document
@@ -26,7 +20,7 @@ interface ScElasticsearchDocumentContract
         array $params = [],
         ?string $id = null
     ) : array;
-    
+
     /**
      * Update document
      *
@@ -34,7 +28,7 @@ interface ScElasticsearchDocumentContract
      * @param string $type
      * @param string|null $version
      * @param array $params
-     * @param string $id
+     * @param null|string $id
      * @return array
      */
     public function updateDocument(
@@ -42,9 +36,29 @@ interface ScElasticsearchDocumentContract
         string $type,
         string $version = null,
         array $params = [],
-        string $id
+        ?string $id = null
     ) : array;
-    
+
+    /**
+     * Create documents with bulk
+     *
+     * @param string $index
+     * @param string $type
+     * @param string|null $version
+     * @param array $body
+     * @param array|null $ids
+     * @param array|null $parents
+     * @return array
+     */
+    public function createDocumentsWithBulk(
+        string $index,
+        string $type,
+        string $version = null,
+        array $body = [],
+        ?array $ids = null,
+        ?array $parents = null
+    ) : array;
+
     /**
      * Delete document
      *
@@ -64,6 +78,24 @@ interface ScElasticsearchDocumentContract
     ) : array;
     
     /**
+     * Delete documents with bulk
+     *
+     * @param string $index
+     * @param string $type
+     * @param array $ids
+     * @param string|null $version
+     * @param array|null $parents
+     * @return array
+     */
+    public function deleteDocumentsWithBulk(
+        string $index,
+        string $type,
+        array $ids,
+        string $version = null,
+        ?array $parents = null
+    ) : array;
+
+    /**
      * Delete documents by query
      *
      * @param string $index
@@ -80,7 +112,7 @@ interface ScElasticsearchDocumentContract
         string $version = null,
         array $params = []
     ) : array;
-    
+
     /**
      * Get document
      *
@@ -96,7 +128,7 @@ interface ScElasticsearchDocumentContract
         string $id,
         string $version = null
     ) : array;
-    
+
     /**
      * Mget documents
      *
@@ -112,7 +144,7 @@ interface ScElasticsearchDocumentContract
         array $params = [],
         string $version = null
     ) : array;
-    
+
     /**
      * Exist document
      *

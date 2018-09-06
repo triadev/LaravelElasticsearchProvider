@@ -4,13 +4,7 @@ namespace Triadev\Es\Contract;
 use Triadev\Es\Exception\Alias\AliasFoundException;
 use Triadev\Es\Exception\Alias\AliasNotFoundException;
 
-/**
- * Interface ScElasticsearchAliasContract
- *
- * @author Christopher Lorke <lorke@traum-ferienwohnungen.de>
- * @package Triadev\Es\Contract
- */
-interface ScElasticsearchAliasContract
+interface ElasticsearchAliasContract
 {
     /**
      * Add an alias

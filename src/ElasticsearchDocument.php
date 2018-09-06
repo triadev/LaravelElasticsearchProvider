@@ -2,32 +2,28 @@
 namespace Triadev\Es;
 
 use Elasticsearch\Client;
-use Triadev\Es\Contract\ScElasticsearchDocumentContract;
-use Triadev\Es\Helper\MetricHelper;
-use Triadev\Es\Helper\VersionHelper;
+use Triadev\Es\Business\Helper\Version;
+use Triadev\Es\Contract\ElasticsearchClientContract;
+use Triadev\Es\Contract\ElasticsearchDocumentContract;
 
-/**
- * Class ScElasticsearchDocument
- *
- * @author Christopher Lorke <lorke@traum-ferienwohnungen.de>
- * @package Triadev\Es
- */
-class ScElasticsearchDocument implements ScElasticsearchDocumentContract
+class ElasticsearchDocument implements ElasticsearchDocumentContract
 {
+    use Version;
+
     /**
      * @var Client
      */
     private $client;
     
     /**
-     * ScElasticsearchIndex constructor.
-     * @param Client $client
+     * ElasticsearchAlias constructor.
+     * @param ElasticsearchClientContract $clientBuilder
      */
-    public function __construct(Client $client)
+    public function __construct(ElasticsearchClientContract $clientBuilder)
     {
-        $this->client = $client;
+        $this->client = $clientBuilder->getEsClient();
     }
-    
+
     /**
      * Create document
      *
@@ -45,25 +41,18 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
         array $params = [],
         ?string $id = null
     ) : array {
-        $requestStartTime = MetricHelper::getRequestStartTime();
-        
-        $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
+        $params['index'] = $this->createIndexWithVersion($index, $version);
         $params['type'] = $type;
-        
+
         if ($id) {
             $params['id'] = $id;
         }
-        
+
         $result = $this->client->index($params);
-        
-        MetricHelper::setRequestDurationHistogram(
-            MetricHelper::getRequestEndTimeInMilliseconds($requestStartTime),
-            'createDocument'
-        );
-        
+
         return $result;
     }
-    
+
     /**
      * Update document
      *
@@ -71,7 +60,7 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
      * @param string $type
      * @param string|null $version
      * @param array $params
-     * @param string $id
+     * @param null|string $id
      * @return array
      */
     public function updateDocument(
@@ -79,24 +68,67 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
         string $type,
         string $version = null,
         array $params = [],
-        string $id
+        ?string $id = null
     ) : array {
-        $requestStartTime = MetricHelper::getRequestStartTime();
-        
-        $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
+        $params['index'] = $this->createIndexWithVersion($index, $version);
         $params['type'] = $type;
-        $params['id'] = $id;
-        
+
+        if ($id) {
+            $params['id'] = $id;
+        }
+
         $result = $this->client->update($params);
-        
-        MetricHelper::setRequestDurationHistogram(
-            MetricHelper::getRequestEndTimeInMilliseconds($requestStartTime),
-            'updateDocument'
-        );
-        
+
         return $result;
     }
     
+    /**
+     * Create documents with bulk
+     *
+     * @param string $index
+     * @param string $type
+     * @param string|null $version
+     * @param array $body
+     * @param array|null $ids
+     * @param array|null $parents
+     * @return array
+     */
+    public function createDocumentsWithBulk(
+        string $index,
+        string $type,
+        string $version = null,
+        array $body = [],
+        ?array $ids = null,
+        ?array $parents = null
+    ) : array {
+        $params = [];
+
+        foreach ($body as $key => $b) {
+            $esIndex = [
+                '_index' => $this->createIndexWithVersion($index, $version),
+                '_type' => $type,
+            ];
+
+            if (is_array($ids) && count($body) == count($ids)) {
+                $esIndex['_id'] = $ids[$key];
+            }
+            
+            if (is_array($parents) && count($body) == count($parents)) {
+                $esIndex['parent'] = $parents[$key];
+            }
+
+            $params['body'][] = [
+                'index' => $esIndex
+            ];
+
+            $params['body'][] = $b;
+        }
+
+        $result = $this->client->bulk($params);
+
+        return $result;
+    }
+
     /**
      * Delete document
      *
@@ -114,22 +146,55 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
         string $version = null,
         array $params = []
     ) : array {
-        $requestStartTime = MetricHelper::getRequestStartTime();
-        
-        $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
+        $params['index'] = $this->createIndexWithVersion($index, $version);
         $params['type'] = $type;
         $params['id'] = $id;
-        
+
         $result = $this->client->delete($params);
-        
-        MetricHelper::setRequestDurationHistogram(
-            MetricHelper::getRequestEndTimeInMilliseconds($requestStartTime),
-            'deleteDocument'
-        );
-        
+
         return $result;
     }
     
+    /**
+     * Delete documents with bulk
+     *
+     * @param string $index
+     * @param string $type
+     * @param array $ids
+     * @param string|null $version
+     * @param array|null $parents
+     * @return array
+     */
+    public function deleteDocumentsWithBulk(
+        string $index,
+        string $type,
+        array $ids,
+        string $version = null,
+        ?array $parents = null
+    ) : array {
+        $params = [];
+        
+        foreach ($ids as $key => $id) {
+            $esIndex = [
+                '_index' => $this->createIndexWithVersion($index, $version),
+                '_type' => $type,
+                '_id' => $id
+            ];
+            
+            if (is_array($parents) && count($ids) == count($parents)) {
+                $esIndex['parent'] = $parents[$key];
+            }
+            
+            $params['body'][] = [
+                'delete' => $esIndex
+            ];
+        }
+        
+        $result = $this->client->bulk($params);
+        
+        return $result;
+    }
+
     /**
      * Delete documents by query
      *
@@ -147,19 +212,12 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
         string $version = null,
         array $params = []
     ): array {
-        $requestStartTime = MetricHelper::getRequestStartTime();
-        
-        $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
+        $params['index'] = $this->createIndexWithVersion($index, $version);
         $params['type'] = $type;
         $params['body'] = $body;
-        
+
         $result = $this->client->deleteByQuery($params);
-        
-        MetricHelper::setRequestDurationHistogram(
-            MetricHelper::getRequestEndTimeInMilliseconds($requestStartTime),
-            'deleteDocumentsByQuery'
-        );
-        
+
         return $result;
     }
     
@@ -178,19 +236,12 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
         string $id,
         string $version = null
     ) : array {
-        $requestStartTime = MetricHelper::getRequestStartTime();
-        
-        $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
+        $params['index'] = $this->createIndexWithVersion($index, $version);
         $params['type'] = $type;
         $params['id'] = $id;
-        
+
         $result = $this->client->get($params);
-        
-        MetricHelper::setRequestDurationHistogram(
-            MetricHelper::getRequestEndTimeInMilliseconds($requestStartTime),
-            'getDocument'
-        );
-        
+
         return $result;
     }
     
@@ -209,18 +260,11 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
         array $params = [],
         string $version = null
     ) : array {
-        $requestStartTime = MetricHelper::getRequestStartTime();
-        
-        $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
+        $params['index'] = $this->createIndexWithVersion($index, $version);
         $params['type'] = $type;
-        
+
         $result = $this->client->mget($params);
-        
-        MetricHelper::setRequestDurationHistogram(
-            MetricHelper::getRequestEndTimeInMilliseconds($requestStartTime),
-            'mgetDocuments'
-        );
-        
+
         return $result;
     }
     
@@ -241,19 +285,12 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
         array $params = [],
         string $version = null
     ) : bool {
-        $requestStartTime = MetricHelper::getRequestStartTime();
-        
-        $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
+        $params['index'] = $this->createIndexWithVersion($index, $version);
         $params['type'] = $type;
         $params['id'] = $id;
-        
+
         $result = (bool)$this->client->exists($params);
-        
-        MetricHelper::setRequestDurationHistogram(
-            MetricHelper::getRequestEndTimeInMilliseconds($requestStartTime),
-            'existDocument'
-        );
-        
+
         return $result;
     }
     
@@ -272,18 +309,11 @@ class ScElasticsearchDocument implements ScElasticsearchDocumentContract
         array $params = [],
         string $version = null
     ): int {
-        $requestStartTime = MetricHelper::getRequestStartTime();
-        
-        $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
+        $params['index'] = $this->createIndexWithVersion($index, $version);
         $params['type'] = $type;
-        
+    
         $result = $this->client->count($params);
-        
-        MetricHelper::setRequestDurationHistogram(
-            MetricHelper::getRequestEndTimeInMilliseconds($requestStartTime),
-            'countDocuments'
-        );
-        
+    
         return $result['count'];
     }
 }

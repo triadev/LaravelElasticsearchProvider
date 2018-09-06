@@ -3,13 +3,7 @@ namespace Triadev\Es\Contract;
 
 use Elasticsearch\Client;
 
-/**
- * Interface ScElasticsearchClientContract
- *
- * @author Christopher Lorke <lorke@traum-ferienwohnungen.de>
- * @package Triadev\Es\Contract
- */
-interface ScElasticsearchClientContract
+interface ElasticsearchClientContract
 {
     /**
      * Get elasticsearch client

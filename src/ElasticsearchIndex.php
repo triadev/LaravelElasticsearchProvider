@@ -2,33 +2,30 @@
 namespace Triadev\Es;
 
 use Elasticsearch\Client;
-use Triadev\Es\Contract\ScElasticsearchIndexContract;
+use Triadev\Es\Business\Helper\Version;
+use Triadev\Es\Contract\ElasticsearchClientContract;
+use Triadev\Es\Contract\ElasticsearchIndexContract;
 use Triadev\Es\Exception\Index\IndexFoundException;
 use Triadev\Es\Exception\Index\IndexNotFoundException;
-use Triadev\Es\Helper\VersionHelper;
 
-/**
- * Class ScElasticsearchIndex
- *
- * @author Christopher Lorke <lorke@traum-ferienwohnungen.de>
- * @package Triadev\Es
- */
-class ScElasticsearchIndex implements ScElasticsearchIndexContract
+class ElasticsearchIndex implements ElasticsearchIndexContract
 {
+    use Version;
+
     /**
      * @var Client
      */
     private $client;
-
+    
     /**
-     * ScElasticsearchIndex constructor.
-     * @param Client $client
+     * ElasticsearchIndex constructor.
+     * @param ElasticsearchClientContract $clientBuilder
      */
-    public function __construct(Client $client)
+    public function __construct(ElasticsearchClientContract $clientBuilder)
     {
-        $this->client = $client;
+        $this->client = $clientBuilder->getEsClient();
     }
-
+    
     /**
      * Create index
      *
@@ -41,7 +38,7 @@ class ScElasticsearchIndex implements ScElasticsearchIndexContract
     public function createIndex(string $index, array $params, string $version = null) : array
     {
         if (!$this->existIndex([$index], $version)) {
-            $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
+            $params['index'] = $this->createIndexWithVersion($index, $version);
 
             return $this->client->indices()->create($params);
         }
@@ -63,7 +60,7 @@ class ScElasticsearchIndex implements ScElasticsearchIndexContract
 
         foreach ($index as $i) {
             if ($this->existIndex([$i], $version)) {
-                $indices[] = VersionHelper::createIndexWithVersion($i, $version);
+                $indices[] = $this->createIndexWithVersion($i, $version);
             }
         }
 
@@ -100,7 +97,7 @@ class ScElasticsearchIndex implements ScElasticsearchIndexContract
         $indices = [];
 
         foreach ($index as $i) {
-            $indices[] = VersionHelper::createIndexWithVersion($i, $version);
+            $indices[] = $this->createIndexWithVersion($i, $version);
         }
 
         return $this->client->indices()->exists([
@@ -128,18 +125,28 @@ class ScElasticsearchIndex implements ScElasticsearchIndexContract
      * @param string $from_version
      * @param string $to_version
      * @param array $params
+     * @param array|null $source
      * @return array
      */
-    public function reindex(string $index, string $from_version, string $to_version, array $params = []) : array
-    {
+    public function reindex(
+        string $index,
+        string $from_version,
+        string $to_version,
+        array $params = [],
+        ?array $source = null
+    ) : array {
         $params['body'] = [
             'source' => [
-                'index' => VersionHelper::createIndexWithVersion($index, $from_version)
+                'index' => $this->createIndexWithVersion($index, $from_version)
             ],
             'dest' => [
-                'index' => VersionHelper::createIndexWithVersion($index, $to_version)
+                'index' => $this->createIndexWithVersion($index, $to_version)
             ]
         ];
+
+        if (is_array($source)) {
+            $params['body']['source']['_source'] = $source;
+        }
 
         return $this->client->reindex($params);
     }

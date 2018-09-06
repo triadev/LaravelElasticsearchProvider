@@ -1,49 +1,48 @@
 <?php
 namespace Triadev\Es\Models;
 
-/**
- * Class SearchResult
- *
- * @author Christopher Lorke <lorke@traum-ferienwohnungen.de>
- * @package Triadev\Es\Models
- */
 class SearchResult
 {
     /**
      * @var int
      */
     private $took;
-
+    
     /**
      * @var int
      */
     private $timed_out;
-
+    
     /**
      * @var Shards
      */
     private $shards;
-
+    
     /**
      * @var int
      */
     private $total;
-
+    
     /**
      * @var double|null
      */
     private $max_score;
-
+    
+    /**
+     * @var string|null
+     */
+    private $scroll_id;
+    
     /**
      * @var array
      */
     private $hits = [];
-
+    
     /**
      * @var array
      */
     private $aggs = [];
-
+    
     /**
      * @return int
      */
@@ -51,7 +50,7 @@ class SearchResult
     {
         return $this->took;
     }
-
+    
     /**
      * @param int $took
      */
@@ -59,7 +58,7 @@ class SearchResult
     {
         $this->took = $took;
     }
-
+    
     /**
      * @return Shards
      */
@@ -67,7 +66,7 @@ class SearchResult
     {
         return $this->shards;
     }
-
+    
     /**
      * @param Shards $shards
      */
@@ -75,7 +74,7 @@ class SearchResult
     {
         $this->shards = $shards;
     }
-
+    
     /**
      * @return int
      */
@@ -83,7 +82,7 @@ class SearchResult
     {
         return $this->total;
     }
-
+    
     /**
      * @param int $total
      */
@@ -91,7 +90,7 @@ class SearchResult
     {
         $this->total = $total;
     }
-
+    
     /**
      * @return float|null
      */
@@ -99,7 +98,7 @@ class SearchResult
     {
         return $this->max_score;
     }
-
+    
     /**
      * @param float|null $max_score
      */
@@ -107,7 +106,7 @@ class SearchResult
     {
         $this->max_score = $max_score;
     }
-
+    
     /**
      * @return array
      */
@@ -115,7 +114,7 @@ class SearchResult
     {
         return $this->hits;
     }
-
+    
     /**
      * @param array $hits
      */
@@ -123,7 +122,7 @@ class SearchResult
     {
         $this->hits = $hits;
     }
-
+    
     /**
      * @param Hit $hit
      */
@@ -131,7 +130,7 @@ class SearchResult
     {
         $this->hits[] = $hit;
     }
-
+    
     /**
      * @return int
      */
@@ -139,7 +138,7 @@ class SearchResult
     {
         return $this->timed_out;
     }
-
+    
     /**
      * @param int $timed_out
      */
@@ -147,7 +146,7 @@ class SearchResult
     {
         $this->timed_out = $timed_out;
     }
-
+    
     /**
      * @return array
      */
@@ -155,12 +154,28 @@ class SearchResult
     {
         return $this->aggs;
     }
-
+    
     /**
      * @param array $aggs
      */
     public function setAggs(array $aggs)
     {
         $this->aggs = $aggs;
+    }
+    
+    /**
+     * @return null|string
+     */
+    public function getScrollId(): ?string
+    {
+        return $this->scroll_id;
+    }
+    
+    /**
+     * @param null|string $scroll_id
+     */
+    public function setScrollId(?string $scroll_id): void
+    {
+        $this->scroll_id = $scroll_id;
     }
 }
