@@ -1,7 +1,6 @@
 <?php
 namespace Triadev\Es;
 
-use Monolog\Logger;
 use Triadev\Es\Business\Config\ConfigFacade;
 use Triadev\Es\Contract\ElasticsearchClientContract;
 use Elasticsearch\Client;
@@ -39,11 +38,7 @@ class ElasticsearchClient implements ElasticsearchClientContract
         ]);
         
         $clientBuilder->setRetries($this->getRetries());
-
-        $logger = $this->getLogger();
-        if ($logger) {
-            $clientBuilder->setLogger($logger);
-        }
+        $clientBuilder->setLogger(Log::getLogger());
 
         return $clientBuilder->build();
     }
@@ -56,10 +51,5 @@ class ElasticsearchClient implements ElasticsearchClientContract
     public function getEsClient(): Client
     {
         return $this->client;
-    }
-
-    private function getLogger() :?Logger
-    {
-        return Log::getLogger();
     }
 }
