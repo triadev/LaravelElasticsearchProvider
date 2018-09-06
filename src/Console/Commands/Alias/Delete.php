@@ -13,7 +13,7 @@ class Delete extends Command
      *
      * @var string
      */
-    protected $signature = 'tfw:es:alias:delete
+    protected $signature = 'triadev:es:alias:delete
                             {index : Index}
                             {alias : Alias}
                             {version : Version}';

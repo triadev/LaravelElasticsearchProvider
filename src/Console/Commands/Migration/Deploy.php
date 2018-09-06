@@ -16,7 +16,7 @@ class Deploy extends Command
      *
      * @var string
      */
-    protected $signature = 'tfw:es:deploy
+    protected $signature = 'triadev:es:deploy
                             {index : Index}
                             {migrate_data : Migrate the data}';
 
@@ -33,9 +33,8 @@ class Deploy extends Command
      * @param ElasticsearchIndexContract $elasticsearchIndex
      * @throws \Triadev\Es\Exception\Index\IndexNotFoundException
      */
-    public function handle(
-        ElasticsearchIndexContract $elasticsearchIndex
-    ) {
+    public function handle(ElasticsearchIndexContract $elasticsearchIndex)
+    {
         $version = $this->getDeployVersions();
 
         $index = $this->argument('index');
@@ -106,14 +105,7 @@ class Deploy extends Command
             ]);
         }
     }
-
-    /**
-     * Is the to version higher then the old version
-     *
-     * @param string $from
-     * @param string $to
-     * @return bool
-     */
+    
     private function isToVersionHigherThenOldVersion(string $from, string $to): bool
     {
         $from_numeric = preg_replace('![^0-9]!', '', $from);
@@ -130,15 +122,7 @@ class Deploy extends Command
 
         return true;
     }
-
-    /**
-     * Create index
-     *
-     * @param ElasticsearchIndexContract $elasticsearchIndex
-     * @param string $index
-     * @param array $config
-     * @param string $version
-     */
+    
     private function createIndex(
         ElasticsearchIndexContract $elasticsearchIndex,
         string $index,

@@ -13,7 +13,7 @@ class Create extends Command
      *
      * @var string
      */
-    protected $signature = 'tfw:es:alias:create
+    protected $signature = 'triadev:es:alias:create
                             {index : Index}
                             {alias : Alias}
                             {version : Version}';

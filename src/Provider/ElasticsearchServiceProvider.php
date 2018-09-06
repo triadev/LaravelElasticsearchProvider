@@ -5,11 +5,9 @@ use Triadev\Es\Console\Commands\Index\Create as CreateIndex;
 use Triadev\Es\Console\Commands\Index\Delete as DeleteIndex;
 use Triadev\Es\Console\Commands\Alias\Create as CreateAlias;
 use Triadev\Es\Console\Commands\Alias\Delete as DeleteAlias;
-use Triadev\Es\Console\Commands\Migration\Activate;
 use Triadev\Es\Console\Commands\Migration\Deploy;
-use Triadev\Es\Console\Commands\Migration\Migrate;
 use Triadev\Es\Console\Commands\Migration\Reindex;
-use Triadev\Es\Console\Commands\Version\Overview as OverviewVersion;
+use Triadev\Es\Console\Commands\Version\Overview;
 use Triadev\Es\Contract\ElasticsearchAliasContract;
 use Triadev\Es\Contract\ElasticsearchClientContract;
 use Triadev\Es\Contract\ElasticsearchDocumentContract;
@@ -23,7 +21,6 @@ use Triadev\Es\ElasticsearchIndex;
 use Triadev\Es\ElasticsearchMapping;
 use Illuminate\Support\ServiceProvider;
 use Triadev\Es\ElasticsearchSearch;
-use Triadev\PrometheusExporter\Provider\PrometheusExporterServiceProvider;
 
 class ElasticsearchServiceProvider extends ServiceProvider
 {
@@ -48,11 +45,9 @@ class ElasticsearchServiceProvider extends ServiceProvider
                 DeleteIndex::class,
                 CreateAlias::class,
                 DeleteAlias::class,
-                OverviewVersion::class,
-                Migrate::class,
+                Overview::class,
                 Deploy::class,
                 Reindex::class,
-                Activate::class
             ]);
         }
     }

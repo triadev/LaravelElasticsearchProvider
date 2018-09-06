@@ -12,7 +12,7 @@ class Overview extends Command
      *
      * @var string
      */
-    protected $signature = 'tfw:es:version:overview
+    protected $signature = 'triadev:es:version:overview
                             {index : Index}';
 
     /**

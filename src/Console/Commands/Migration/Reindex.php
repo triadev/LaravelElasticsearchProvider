@@ -12,7 +12,7 @@ class Reindex extends Command
      *
      * @var string
      */
-    protected $signature = 'tfw:es:reindex
+    protected $signature = 'triadev:es:reindex
                             {index : Index}
                             {from_version : From version}
                             {to_version : To version}';
@@ -29,9 +29,8 @@ class Reindex extends Command
      *
      * @param ElasticsearchIndexContract $elasticsearchIndex
      */
-    public function handle(
-        ElasticsearchIndexContract $elasticsearchIndex
-    ) {
+    public function handle(ElasticsearchIndexContract $elasticsearchIndex)
+    {
         $index = $this->argument('index');
         $from_version = $this->argument('from_version');
         $to_version = $this->argument('to_version');

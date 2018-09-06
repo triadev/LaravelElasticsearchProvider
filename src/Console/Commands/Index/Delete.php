@@ -16,7 +16,7 @@ class Delete extends Command
      *
      * @var string
      */
-    protected $signature = 'tfw:es:index:delete
+    protected $signature = 'triadev:es:index:delete
                             {index : Index (_all for all)}
                             {version : Version}';
 
