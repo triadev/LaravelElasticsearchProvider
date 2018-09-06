@@ -2,31 +2,28 @@
 namespace Triadev\Es;
 
 use Elasticsearch\Client;
-use Triadev\Es\Contract\ScElasticsearchAliasContract;
+use Triadev\Es\Business\Helper\Version;
+use Triadev\Es\Contract\ElasticsearchAliasContract;
+use Triadev\Es\Contract\ElasticsearchClientContract;
 use Triadev\Es\Exception\Alias\AliasFoundException;
 use Triadev\Es\Exception\Alias\AliasNotFoundException;
-use Triadev\Es\Helper\VersionHelper;
 
-/**
- * Class ScElasticsearchAlias
- *
- * @author Christopher Lorke <lorke@traum-ferienwohnungen.de>
- * @package Triadev\Es
- */
-class ScElasticsearchAlias implements ScElasticsearchAliasContract
+class ElasticsearchAlias implements ElasticsearchAliasContract
 {
+    use Version;
+
     /**
      * @var Client
      */
     private $client;
-
+    
     /**
-     * ScElasticsearchIndex constructor.
-     * @param Client $client
+     * ElasticsearchAlias constructor.
+     * @param ElasticsearchClientContract $clientBuilder
      */
-    public function __construct(Client $client)
+    public function __construct(ElasticsearchClientContract $clientBuilder)
     {
-        $this->client = $client;
+        $this->client = $clientBuilder->getEsClient();
     }
 
     /**
@@ -42,7 +39,7 @@ class ScElasticsearchAlias implements ScElasticsearchAliasContract
     {
         if (!$this->existAlias([$index], [$alias], $version)) {
             return $this->client->indices()->putAlias([
-                'index' => VersionHelper::createIndexWithVersion($index, $version),
+                'index' => $this->createIndexWithVersion($index, $version),
                 'name' => $alias
             ]);
         }
@@ -63,7 +60,7 @@ class ScElasticsearchAlias implements ScElasticsearchAliasContract
     {
         if ($this->existAlias([$index], [$alias], $version)) {
             return $this->client->indices()->deleteAlias([
-                'index' => VersionHelper::createIndexWithVersion($index, $version),
+                'index' => $this->createIndexWithVersion($index, $version),
                 'name' => $alias
             ]);
         }
@@ -86,7 +83,7 @@ class ScElasticsearchAlias implements ScElasticsearchAliasContract
 
         $indices = [];
         foreach ($index as $i) {
-            $indices[] = VersionHelper::createIndexWithVersion($i, $version);
+            $indices[] = $this->createIndexWithVersion($i, $version);
         }
         $params['index'] = implode(',', $indices);
 

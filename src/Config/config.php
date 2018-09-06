@@ -11,6 +11,11 @@ return [
             'indices' => []
         ]
     ],
+    'snapshot' => [
+        'repository' => 'default',
+        'type' => 'gcs',
+        'settings' => []
+    ],
     'config' => [
         'retries' => 2,
         'indices' => []

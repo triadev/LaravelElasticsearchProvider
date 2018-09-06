@@ -1,17 +1,11 @@
 <?php
 namespace Triadev\Es\Console\Commands\Alias;
 
-use Triadev\Es\Contract\ScElasticsearchAliasContract;
+use Triadev\Es\Contract\ElasticsearchAliasContract;
 use Triadev\Es\Exception\Alias\AliasNotFoundException;
 use Illuminate\Console\Command;
 use Log;
 
-/**
- * Class Delete
- *
- * @author Christopher Lorke <lorke@traum-ferienwohnungen.de>
- * @package Triadev\Es\Console\Commands\Alias
- */
 class Delete extends Command
 {
     /**
@@ -19,7 +13,7 @@ class Delete extends Command
      *
      * @var string
      */
-    protected $signature = 'triadev:elasticsearch:alias:delete
+    protected $signature = 'tfw:es:alias:delete
                             {index : Index}
                             {alias : Alias}
                             {version : Version}';
@@ -34,9 +28,9 @@ class Delete extends Command
     /**
      * Execute the console command.
      *
-     * @param ScElasticsearchAliasContract $scElasticsearchAlias
+     * @param ElasticsearchAliasContract $elasticsearchAlias
      */
-    public function handle(ScElasticsearchAliasContract $scElasticsearchAlias)
+    public function handle(ElasticsearchAliasContract $elasticsearchAlias)
     {
         $index = $this->argument('index');
         $alias = $this->argument('alias');
@@ -50,7 +44,7 @@ class Delete extends Command
         ));
 
         try {
-            $scElasticsearchAlias->deleteAlias($index, $alias, $version);
+            $elasticsearchAlias->deleteAlias($index, $alias, $version);
 
             Log::info(sprintf(
                 "The alias was deleted: %s | %s | %s",

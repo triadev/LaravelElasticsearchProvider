@@ -1,39 +1,42 @@
 <?php
 namespace Triadev\Es\Models;
 
-/**
- * Class Hit
- *
- * @author Christopher Lorke <lorke@traum-ferienwohnungen.de>
- * @package Triadev\Es\Models
- */
 class Hit
 {
     /**
      * @var string
      */
     private $index;
-
+    
     /**
      * @var string
      */
     private $type;
-
+    
     /**
      * @var string
      */
     private $id;
-
+    
     /**
      * @var double|null
      */
     private $score;
-
+    
     /**
      * @var array
      */
     private $source;
-
+    
+    /** @var array|null */
+    private $inner_hits;
+    
+    /** @var string|null */
+    private $routing;
+    
+    /** @var string|null */
+    private $parent;
+    
     /**
      * @return string
      */
@@ -41,7 +44,7 @@ class Hit
     {
         return $this->index;
     }
-
+    
     /**
      * @param string $index
      */
@@ -49,7 +52,7 @@ class Hit
     {
         $this->index = $index;
     }
-
+    
     /**
      * @return string
      */
@@ -57,7 +60,7 @@ class Hit
     {
         return $this->type;
     }
-
+    
     /**
      * @param string $type
      */
@@ -65,7 +68,7 @@ class Hit
     {
         $this->type = $type;
     }
-
+    
     /**
      * @return string
      */
@@ -73,7 +76,7 @@ class Hit
     {
         return $this->id;
     }
-
+    
     /**
      * @param string $id
      */
@@ -81,7 +84,7 @@ class Hit
     {
         $this->id = $id;
     }
-
+    
     /**
      * @return float|null
      */
@@ -89,7 +92,7 @@ class Hit
     {
         return $this->score;
     }
-
+    
     /**
      * @param float|null $score
      */
@@ -97,7 +100,7 @@ class Hit
     {
         $this->score = $score;
     }
-
+    
     /**
      * @return array
      */
@@ -105,12 +108,60 @@ class Hit
     {
         return $this->source;
     }
-
+    
     /**
      * @param array $source
      */
     public function setSource(array $source)
     {
         $this->source = $source;
+    }
+    
+    /**
+     * @return array|null
+     */
+    public function getInnerHits(): ?array
+    {
+        return $this->inner_hits;
+    }
+    
+    /**
+     * @param array|null $inner_hits
+     */
+    public function setInnerHits(?array $inner_hits): void
+    {
+        $this->inner_hits = $inner_hits;
+    }
+    
+    /**
+     * @return null|string
+     */
+    public function getRouting(): ?string
+    {
+        return $this->routing;
+    }
+    
+    /**
+     * @param null|string $routing
+     */
+    public function setRouting(?string $routing): void
+    {
+        $this->routing = $routing;
+    }
+    
+    /**
+     * @return null|string
+     */
+    public function getParent(): ?string
+    {
+        return $this->parent;
+    }
+    
+    /**
+     * @param null|string $parent
+     */
+    public function setParent(?string $parent): void
+    {
+        $this->parent = $parent;
     }
 }

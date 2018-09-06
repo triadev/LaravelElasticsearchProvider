@@ -1,16 +1,10 @@
 <?php
 namespace Triadev\Es\Console\Commands\Migration;
 
-use Triadev\Es\Contract\ScElasticsearchIndexContract;
+use Triadev\Es\Contract\ElasticsearchIndexContract;
 use Illuminate\Console\Command;
 use Log;
 
-/**
- * Class Reindex
- *
- * @author Christopher Lorke <lorke@traum-ferienwohnungen.de>
- * @package Triadev\Es\Console\Commands\Migration
- */
 class Reindex extends Command
 {
     /**
@@ -18,7 +12,7 @@ class Reindex extends Command
      *
      * @var string
      */
-    protected $signature = 'triadev:elasticsearch:reindex
+    protected $signature = 'tfw:es:reindex
                             {index : Index}
                             {from_version : From version}
                             {to_version : To version}';
@@ -33,22 +27,22 @@ class Reindex extends Command
     /**
      * Execute the console command.
      *
-     * @param ScElasticsearchIndexContract $scElasticsearchIndex
+     * @param ElasticsearchIndexContract $elasticsearchIndex
      */
     public function handle(
-        ScElasticsearchIndexContract $scElasticsearchIndex
+        ElasticsearchIndexContract $elasticsearchIndex
     ) {
         $index = $this->argument('index');
         $from_version = $this->argument('from_version');
         $to_version = $this->argument('to_version');
 
-        if (!$scElasticsearchIndex->existIndex([$index], $from_version)) {
+        if (!$elasticsearchIndex->existIndex([$index], $from_version)) {
             Log::error("The index (from) could not be found.", [
                 'index' => $index,
                 'from_version' => $from_version,
                 'to_version' => $to_version
             ]);
-        } elseif (!$scElasticsearchIndex->existIndex([$index], $to_version)) {
+        } elseif (!$elasticsearchIndex->existIndex([$index], $to_version)) {
             Log::error("The index (to) could not be found.", [
                 'index' => $index,
                 'from_version' => $from_version,
@@ -56,7 +50,7 @@ class Reindex extends Command
             ]);
         } else {
             try {
-                $scElasticsearchIndex->reindex($index, $from_version, $to_version);
+                $elasticsearchIndex->reindex($index, $from_version, $to_version);
             } catch (\Exception $e) {
                 Log::error(sprintf(
                     "The indices could not be reindex: %s",

@@ -1,12 +1,6 @@
 <?php
 namespace Triadev\Es\Exception\Index;
 
-/**
- * Class IndexNotFoundException
- *
- * @author Christopher Lorke <lorke@traum-ferienwohnungen.de>
- * @package Triadev\Es\Exception\Index
- */
 class IndexNotFoundException extends \Exception
 {
     /**

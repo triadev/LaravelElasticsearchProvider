@@ -1,19 +1,13 @@
 <?php
 namespace Triadev\Es\Console\Commands\Migration;
 
-use Triadev\Es\Contract\ScElasticsearchAliasContract;
-use Triadev\Es\Contract\ScElasticsearchIndexContract;
+use Triadev\Es\Contract\ElasticsearchAliasContract;
+use Triadev\Es\Contract\ElasticsearchIndexContract;
 use Triadev\Es\Exception\Alias\AliasFoundException;
 use Triadev\Es\Exception\Alias\AliasNotFoundException;
 use Illuminate\Console\Command;
 use Log;
 
-/**
- * Class Activate
- *
- * @author Christopher Lorke <lorke@traum-ferienwohnungen.de>
- * @package Triadev\Es\Console\Commands\Migration
- */
 class Activate extends Command
 {
     /**
@@ -21,7 +15,7 @@ class Activate extends Command
      *
      * @var string
      */
-    protected $signature = 'triadev:elasticsearch:activate
+    protected $signature = 'tfw:es:activate
                             {index : Index}
                             {from_version : From version}
                             {to_version : To version}';
@@ -36,20 +30,20 @@ class Activate extends Command
     /**
      * Execute the console command.
      *
-     * @param ScElasticsearchIndexContract $scElasticsearchIndex
-     * @param ScElasticsearchAliasContract $scElasticsearchAlias
+     * @param ElasticsearchIndexContract $elasticsearchIndex
+     * @param ElasticsearchAliasContract $elasticsearchAlias
      */
     public function handle(
-        ScElasticsearchIndexContract $scElasticsearchIndex,
-        ScElasticsearchAliasContract $scElasticsearchAlias
+        ElasticsearchIndexContract $elasticsearchIndex,
+        ElasticsearchAliasContract $elasticsearchAlias
     ) {
         $index = $this->argument('index');
         $from_version = $this->argument('from_version');
         $to_version = $this->argument('to_version');
 
-        if ($scElasticsearchIndex->existIndex([$index], $from_version)) {
+        if ($elasticsearchIndex->existIndex([$index], $from_version)) {
             try {
-                $scElasticsearchAlias->deleteAlias($index, $index, $from_version);
+                $elasticsearchAlias->deleteAlias($index, $index, $from_version);
 
                 Log::info(sprintf(
                     "The alias (from) was deleted: %s | %s | %s",
@@ -70,9 +64,9 @@ class Activate extends Command
             }
         }
 
-        if ($scElasticsearchIndex->existIndex([$index], $to_version)) {
+        if ($elasticsearchIndex->existIndex([$index], $to_version)) {
             try {
-                $scElasticsearchAlias->addAlias($index, $index, $to_version);
+                $elasticsearchAlias->addAlias($index, $index, $to_version);
 
                 Log::info(sprintf(
                     "The alias (to) was created: %s | %s | %s",

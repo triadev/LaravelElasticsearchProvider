@@ -1,41 +1,37 @@
 <?php
 namespace Triadev\Es;
 
-use Triadev\Es\Contract\ScElasticsearchClientContract;
-use Triadev\Es\Contract\ScElasticsearchIndexContract;
-use Triadev\Es\Contract\ScElasticsearchMappingContract;
+use Triadev\Es\Business\Helper\Version;
+use Triadev\Es\Contract\ElasticsearchClientContract;
+use Triadev\Es\Contract\ElasticsearchIndexContract;
+use Triadev\Es\Contract\ElasticsearchMappingContract;
 use Triadev\Es\Exception\Index\IndexNotFoundException;
-use Triadev\Es\Helper\VersionHelper;
 
-/**
- * Class ScElasticsearchMapping
- *
- * @author Christopher Lorke <lorke@traum-ferienwohnungen.de>
- * @package Triadev\Es
- */
-class ScElasticsearchMapping implements ScElasticsearchMappingContract
+class ElasticsearchMapping implements ElasticsearchMappingContract
 {
+    use Version;
+
     /**
-     * @var ScElasticsearchClientContract
+     * @var ElasticsearchClientContract
      */
     private $esClient;
 
     /**
-     * @var ScElasticsearchIndexContract
+     * @var ElasticsearchIndexContract
      */
-    private $scElasticsearchIndex;
+    private $elasticsearchIndex;
 
     /**
-     * ScElasticsearchIndex constructor.
-     * @param ScElasticsearchClientContract $esClient
-     * @param ScElasticsearchIndexContract $scElasticsearchIndex
+     * ElasticsearchIndex constructor.
+     * @param ElasticsearchClientContract $esClient
+     * @param ElasticsearchIndexContract $elasticsearchIndex
      */
     public function __construct(
-        ScElasticsearchClientContract $esClient,
-        ScElasticsearchIndexContract $scElasticsearchIndex
+        ElasticsearchClientContract $esClient,
+        ElasticsearchIndexContract $elasticsearchIndex
     ) {
         $this->esClient = $esClient;
-        $this->scElasticsearchIndex = $scElasticsearchIndex;
+        $this->elasticsearchIndex = $elasticsearchIndex;
     }
 
     /**
@@ -50,8 +46,8 @@ class ScElasticsearchMapping implements ScElasticsearchMappingContract
      */
     public function updateMapping(string $index, string $type, array $params, ?string $version = null) : array
     {
-        if ($this->scElasticsearchIndex->existIndex([$index], $version)) {
-            $params['index'] = VersionHelper::createIndexWithVersion($index, $version);
+        if ($this->elasticsearchIndex->existIndex([$index], $version)) {
+            $params['index'] = $this->createIndexWithVersion($index, $version);
             $params['type'] = $type;
 
             return $this->esClient->getEsClient()->indices()->putMapping($params);
@@ -71,9 +67,9 @@ class ScElasticsearchMapping implements ScElasticsearchMappingContract
      */
     public function deleteMapping(string $index, string $type, ?string $version = null) : array
     {
-        if ($this->scElasticsearchIndex->existIndex([$index], $version)) {
+        if ($this->elasticsearchIndex->existIndex([$index], $version)) {
             return $this->esClient->getEsClient()->indices()->deleteMapping([
-                'index' => VersionHelper::createIndexWithVersion($index, $version),
+                'index' => $this->createIndexWithVersion($index, $version),
                 'type' => $type
             ]);
         }

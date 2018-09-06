@@ -1,12 +1,6 @@
 <?php
 namespace Triadev\Es\Exception\Alias;
 
-/**
- * Class AliasFoundException
- *
- * @author Christopher Lorke <lorke@traum-ferienwohnungen.de>
- * @package Triadev\Es\Exception\Alias
- */
 class AliasFoundException extends \Exception
 {
     /**

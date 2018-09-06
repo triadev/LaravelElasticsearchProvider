@@ -1,0 +1,25 @@
+version: '2'
+services:
+  es:
+    container_name: elasticsearch
+    image: eu.gcr.io/tfw-server/devops/docker-elasticsearch:5.3.1_tfw0
+    networks:
+      - default
+    environment:
+      - CLUSTER_NAME=tests
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    ports:
+      - "9200:9200"
+
+networks:
+  default:
+    driver: bridge

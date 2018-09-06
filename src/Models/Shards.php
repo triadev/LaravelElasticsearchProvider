@@ -1,29 +1,23 @@
 <?php
 namespace Triadev\Es\Models;
 
-/**
- * Class Shards
- *
- * @author Christopher Lorke <lorke@traum-ferienwohnungen.de>
- * @package Triadev\Es\Models
- */
 class Shards
 {
     /**
      * @var int
      */
     private $total = 0;
-
+    
     /**
      * @var int
      */
     private $successful = 0;
-
+    
     /**
      * @var int
      */
     private $failed = 0;
-
+    
     /**
      * @return int
      */
@@ -31,7 +25,7 @@ class Shards
     {
         return $this->total;
     }
-
+    
     /**
      * @param int $total
      */
@@ -39,7 +33,7 @@ class Shards
     {
         $this->total = $total;
     }
-
+    
     /**
      * @return int
      */
@@ -47,7 +41,7 @@ class Shards
     {
         return $this->successful;
     }
-
+    
     /**
      * @param int $successful
      */
@@ -55,7 +49,7 @@ class Shards
     {
         $this->successful = $successful;
     }
-
+    
     /**
      * @return int
      */
@@ -63,7 +57,7 @@ class Shards
     {
         return $this->failed;
     }
-
+    
     /**
      * @param int $failed
      */

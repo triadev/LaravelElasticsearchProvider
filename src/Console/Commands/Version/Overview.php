@@ -1,16 +1,10 @@
 <?php
 namespace Triadev\Es\Console\Commands\Version;
 
-use Triadev\Es\Contract\ScElasticsearchAliasContract;
-use Triadev\Es\Contract\ScElasticsearchIndexContract;
+use Triadev\Es\Contract\ElasticsearchAliasContract;
+use Triadev\Es\Contract\ElasticsearchIndexContract;
 use Illuminate\Console\Command;
 
-/**
- * Class Overview
- *
- * @author Christopher Lorke <lorke@traum-ferienwohnungen.de>
- * @package Triadev\Es\Console\Commands\Version
- */
 class Overview extends Command
 {
     /**
@@ -18,7 +12,7 @@ class Overview extends Command
      *
      * @var string
      */
-    protected $signature = 'triadev:elasticsearch:version:overview
+    protected $signature = 'tfw:es:version:overview
                             {index : Index}';
 
     /**
@@ -31,14 +25,14 @@ class Overview extends Command
     /**
      * Execute the console command.
      *
-     * @param ScElasticsearchIndexContract $scElasticsearchIndex
-     * @param ScElasticsearchAliasContract $scElasticsearchAlias
+     * @param ElasticsearchIndexContract $elasticsearchIndex
+     * @param ElasticsearchAliasContract $elasticsearchAlias
      */
     public function handle(
-        ScElasticsearchIndexContract $scElasticsearchIndex,
-        ScElasticsearchAliasContract $scElasticsearchAlias
+        ElasticsearchIndexContract $elasticsearchIndex,
+        ElasticsearchAliasContract $elasticsearchAlias
     ) {
-        $indices = $scElasticsearchIndex->getVersionedIndices($this->argument('index'));
+        $indices = $elasticsearchIndex->getVersionedIndices($this->argument('index'));
 
         $headers = ['Name', 'Version', 'Active'];
 
@@ -49,7 +43,7 @@ class Overview extends Command
                 $rows[$matches['version']] = [
                     $matches['name'],
                     $matches['version'],
-                    $scElasticsearchAlias->existAlias(
+                    $elasticsearchAlias->existAlias(
                         [$matches['name']],
                         [$matches['name']],
                         $matches['version']

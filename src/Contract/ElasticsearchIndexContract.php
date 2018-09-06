@@ -4,13 +4,7 @@ namespace Triadev\Es\Contract;
 use Triadev\Es\Exception\Index\IndexFoundException;
 use Triadev\Es\Exception\Index\IndexNotFoundException;
 
-/**
- * Interface ScElasticsearchIndexContract
- *
- * @author Christopher Lorke <lorke@traum-ferienwohnungen.de>
- * @package Triadev\Es\Contract
- */
-interface ScElasticsearchIndexContract
+interface ElasticsearchIndexContract
 {
     /**
      * Create index
@@ -64,7 +58,14 @@ interface ScElasticsearchIndexContract
      * @param string $from_version
      * @param string $to_version
      * @param array $params
+     * @param array|null $source
      * @return array
      */
-    public function reindex(string $index, string $from_version, string $to_version, array $params = []) : array;
+    public function reindex(
+        string $index,
+        string $from_version,
+        string $to_version,
+        array $params = [],
+        ?array $source = null
+    ) : array;
 }
