@@ -1,24 +1,41 @@
-version: '2'
+version: '2.2'
 services:
-  es:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.0
     container_name: elasticsearch
-    image: eu.gcr.io/tfw-server/devops/docker-elasticsearch:5.3.1_tfw0
-    networks:
-      - default
     environment:
-      - CLUSTER_NAME=tests
-      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+      - cluster.name=test-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:
         soft: -1
         hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    cap_add:
-      - IPC_LOCK
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
     ports:
-      - "9200:9200"
+      - 9200:9200
+
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.0
+    container_name: elasticsearch2
+    environment:
+      - cluster.name=test-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=elasticsearch"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata2:/usr/share/elasticsearch/data
+
+volumes:
+  esdata1:
+    driver: local
+  esdata2:
+    driver: local
 
 networks:
   default:
