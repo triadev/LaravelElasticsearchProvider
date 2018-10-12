@@ -15,7 +15,7 @@ class ElasticsearchIndexTest extends IntegrationTestCase
         
         $this->service = app(ElasticsearchIndexContract::class);
         
-        $this->service->deleteAllIndexes();
+        $this->service->deleteAllIndices();
     }
     
     /**
@@ -29,7 +29,7 @@ class ElasticsearchIndexTest extends IntegrationTestCase
         
         $this->assertTrue($this->service->existIndex(['phpunit']));
     
-        $this->service->deleteAllIndexes();
+        $this->service->deleteAllIndices();
     }
     
     /**
@@ -46,7 +46,7 @@ class ElasticsearchIndexTest extends IntegrationTestCase
             'body' => $this->getMapping()
         ]);
     
-        $this->service->deleteAllIndexes();
+        $this->service->deleteAllIndices();
     }
     
     /**
@@ -65,7 +65,7 @@ class ElasticsearchIndexTest extends IntegrationTestCase
         $this->assertTrue($this->service->existIndex(['phpunit1']));
         $this->assertTrue($this->service->existIndex(['phpunit2']));
         
-        $this->service->deleteAllIndexes();
+        $this->service->deleteAllIndices();
     
         $this->assertFalse($this->service->existIndex(['phpunit1']));
         $this->assertFalse($this->service->existIndex(['phpunit2']));
@@ -89,6 +89,6 @@ class ElasticsearchIndexTest extends IntegrationTestCase
         $this->assertTrue(in_array('phpunit_1.0.0', $indices));
         $this->assertTrue(in_array('phpunit_1.0.1', $indices));
         
-        $this->service->deleteAllIndexes();
+        $this->service->deleteAllIndices();
     }
 }

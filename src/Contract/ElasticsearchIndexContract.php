@@ -13,6 +13,7 @@ interface ElasticsearchIndexContract
      * @param array $params
      * @param string|null $version
      * @return array
+     *
      * @throws IndexFoundException
      */
     public function createIndex(string $index, array $params, string $version = null) : array;
@@ -28,11 +29,11 @@ interface ElasticsearchIndexContract
     public function deleteIndex(array $index, string $version = null) : array;
 
     /**
-     * Delete all indexes
+     * Delete all indices
      *
      * @return array
      */
-    public function deleteAllIndexes() : array;
+    public function deleteAllIndices() : array;
 
     /**
      * Exist index

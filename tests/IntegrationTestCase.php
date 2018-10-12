@@ -48,6 +48,11 @@ class IntegrationTestCase extends TestCase
         ]);
     }
     
+    /**
+     * Get mapping
+     *
+     * @return array
+     */
     public function getMapping() : array
     {
         return [

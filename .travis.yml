@@ -22,10 +22,6 @@ after_success:
   - travis_retry php coveralls.phar -v
   - bash <(curl -s https://codecov.io/bash)
 
-#branches:
-#  only:
-#    - master
-
 cache:
   directories:
     - vendor

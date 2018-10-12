@@ -27,32 +27,21 @@ class ElasticsearchIndex implements ElasticsearchIndexContract
     }
     
     /**
-     * Create index
-     *
-     * @param string $index
-     * @param array $params
-     * @param string|null $version
-     * @return array
-     * @throws IndexFoundException
+     * @inheritdoc
      */
     public function createIndex(string $index, array $params, string $version = null) : array
     {
         if (!$this->existIndex([$index], $version)) {
             $params['index'] = $this->createIndexWithVersion($index, $version);
-
+        
             return $this->client->indices()->create($params);
         }
-
+    
         throw new IndexFoundException($index, $version);
     }
 
     /**
-     * Delete index
-     *
-     * @param array $index
-     * @param string|null $version
-     * @return array
-     * @throws IndexNotFoundException
+     * @inheritdoc
      */
     public function deleteIndex(array $index, string $version = null) : array
     {
@@ -74,11 +63,9 @@ class ElasticsearchIndex implements ElasticsearchIndexContract
     }
 
     /**
-     * Delete all indexes
-     *
-     * @return array
+     * @inheritdoc
      */
-    public function deleteAllIndexes() : array
+    public function deleteAllIndices() : array
     {
         return $this->client->indices()->delete([
             'index' => '_all'
@@ -86,11 +73,7 @@ class ElasticsearchIndex implements ElasticsearchIndexContract
     }
 
     /**
-     * Exist index
-     *
-     * @param array $index
-     * @param string|null $version
-     * @return bool
+     * @inheritdoc
      */
     public function existIndex(array $index, ?string $version = null) : bool
     {
@@ -106,10 +89,7 @@ class ElasticsearchIndex implements ElasticsearchIndexContract
     }
 
     /**
-     * Get versioned indices
-     *
-     * @param string $index
-     * @return array
+     * @inheritdoc
      */
     public function getVersionedIndices(string $index) : array
     {
@@ -119,14 +99,7 @@ class ElasticsearchIndex implements ElasticsearchIndexContract
     }
 
     /**
-     * Reindex
-     *
-     * @param string $index
-     * @param string $from_version
-     * @param string $to_version
-     * @param array $params
-     * @param array|null $source
-     * @return array
+     * @inheritdoc
      */
     public function reindex(
         string $index,

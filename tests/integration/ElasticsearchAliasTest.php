@@ -17,7 +17,7 @@ class ElasticsearchAliasTest extends IntegrationTestCase
         /** @var ElasticsearchIndexContract $indexService */
         $indexService = app(ElasticsearchIndexContract::class);
         
-        $indexService->deleteAllIndexes();
+        $indexService->deleteAllIndices();
     
         $this->artisan('triadev:es:index:create', [
             'index' => 'phpunit',

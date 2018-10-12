@@ -33,16 +33,24 @@ class ElasticsearchMapping implements ElasticsearchMappingContract
         $this->esClient = $esClient;
         $this->elasticsearchIndex = $elasticsearchIndex;
     }
+    
+    /**
+     * @inheritdoc
+     */
+    public function getMapping(string $index, string $type, ?string $version = null) : array
+    {
+        if ($this->elasticsearchIndex->existIndex([$index], $version)) {
+            return $this->esClient->getEsClient()->indices()->getMapping([
+                'index' => $index,
+                'type' => $type
+            ]);
+        }
+        
+        throw new IndexNotFoundException($index, $version);
+    }
 
     /**
-     * Update mapping
-     *
-     * @param string $index
-     * @param string $type
-     * @param array $params
-     * @param null|string $version
-     * @return array
-     * @throws IndexNotFoundException
+     * @inheritdoc
      */
     public function updateMapping(string $index, string $type, array $params, ?string $version = null) : array
     {
@@ -57,13 +65,7 @@ class ElasticsearchMapping implements ElasticsearchMappingContract
     }
 
     /**
-     * Delete mapping
-     *
-     * @param string $index
-     * @param string $type
-     * @param null|string $version
-     * @return array
-     * @throws IndexNotFoundException
+     * @inheritdoc
      */
     public function deleteMapping(string $index, string $type, ?string $version = null) : array
     {
