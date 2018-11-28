@@ -1,31 +1,13 @@
 <?php
 namespace Triadev\Es;
 
-use Elasticsearch\Client;
-use Triadev\Es\Business\Helper\Version;
-use Triadev\Es\Contract\ElasticsearchClientContract;
+use Triadev\Es\Business\AbstractElasticsearch;
 use Triadev\Es\Contract\ElasticsearchIndexContract;
 use Triadev\Es\Exception\Index\IndexFoundException;
 use Triadev\Es\Exception\Index\IndexNotFoundException;
 
-class ElasticsearchIndex implements ElasticsearchIndexContract
+class ElasticsearchIndex extends AbstractElasticsearch implements ElasticsearchIndexContract
 {
-    use Version;
-
-    /**
-     * @var Client
-     */
-    private $client;
-    
-    /**
-     * ElasticsearchIndex constructor.
-     * @param ElasticsearchClientContract $clientBuilder
-     */
-    public function __construct(ElasticsearchClientContract $clientBuilder)
-    {
-        $this->client = $clientBuilder->getEsClient();
-    }
-    
     /**
      * Create index
      *
@@ -40,7 +22,7 @@ class ElasticsearchIndex implements ElasticsearchIndexContract
         if (!$this->existIndex([$index], $version)) {
             $params['index'] = $this->createIndexWithVersion($index, $version);
 
-            return $this->client->indices()->create($params);
+            return $this->getElasticsearchClient()->indices()->create($params);
         }
 
         throw new IndexFoundException($index, $version);
@@ -65,7 +47,7 @@ class ElasticsearchIndex implements ElasticsearchIndexContract
         }
 
         if (!empty($indices)) {
-            return $this->client->indices()->delete([
+            return $this->getElasticsearchClient()->indices()->delete([
                 'index' => implode(',', $indices)
             ]);
         }
@@ -80,7 +62,7 @@ class ElasticsearchIndex implements ElasticsearchIndexContract
      */
     public function deleteAllIndexes() : array
     {
-        return $this->client->indices()->delete([
+        return $this->getElasticsearchClient()->indices()->delete([
             'index' => '_all'
         ]);
     }
@@ -100,7 +82,7 @@ class ElasticsearchIndex implements ElasticsearchIndexContract
             $indices[] = $this->createIndexWithVersion($i, $version);
         }
 
-        return $this->client->indices()->exists([
+        return $this->getElasticsearchClient()->indices()->exists([
             'index' => implode(',', $indices)
         ]);
     }
@@ -113,7 +95,7 @@ class ElasticsearchIndex implements ElasticsearchIndexContract
      */
     public function getVersionedIndices(string $index) : array
     {
-        return array_keys($this->client->indices()->get([
+        return array_keys($this->getElasticsearchClient()->indices()->get([
             'index' => sprintf("%s_*", $index)
         ]));
     }
@@ -148,6 +130,6 @@ class ElasticsearchIndex implements ElasticsearchIndexContract
             $params['body']['source']['_source'] = $source;
         }
 
-        return $this->client->reindex($params);
+        return $this->getElasticsearchClient()->reindex($params);
     }
 }

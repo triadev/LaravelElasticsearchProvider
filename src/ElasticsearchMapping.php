@@ -1,21 +1,13 @@
 <?php
 namespace Triadev\Es;
 
-use Triadev\Es\Business\Helper\Version;
-use Triadev\Es\Contract\ElasticsearchClientContract;
+use Triadev\Es\Business\AbstractElasticsearch;
 use Triadev\Es\Contract\ElasticsearchIndexContract;
 use Triadev\Es\Contract\ElasticsearchMappingContract;
 use Triadev\Es\Exception\Index\IndexNotFoundException;
 
-class ElasticsearchMapping implements ElasticsearchMappingContract
+class ElasticsearchMapping extends AbstractElasticsearch implements ElasticsearchMappingContract
 {
-    use Version;
-
-    /**
-     * @var ElasticsearchClientContract
-     */
-    private $esClient;
-
     /**
      * @var ElasticsearchIndexContract
      */
@@ -23,14 +15,10 @@ class ElasticsearchMapping implements ElasticsearchMappingContract
 
     /**
      * ElasticsearchIndex constructor.
-     * @param ElasticsearchClientContract $esClient
      * @param ElasticsearchIndexContract $elasticsearchIndex
      */
-    public function __construct(
-        ElasticsearchClientContract $esClient,
-        ElasticsearchIndexContract $elasticsearchIndex
-    ) {
-        $this->esClient = $esClient;
+    public function __construct(ElasticsearchIndexContract $elasticsearchIndex)
+    {
         $this->elasticsearchIndex = $elasticsearchIndex;
     }
 
@@ -50,7 +38,7 @@ class ElasticsearchMapping implements ElasticsearchMappingContract
             $params['index'] = $this->createIndexWithVersion($index, $version);
             $params['type'] = $type;
 
-            return $this->esClient->getEsClient()->indices()->putMapping($params);
+            return $this->getElasticsearchClient()->indices()->putMapping($params);
         }
 
         throw new IndexNotFoundException($index, $version);
@@ -68,7 +56,7 @@ class ElasticsearchMapping implements ElasticsearchMappingContract
     public function deleteMapping(string $index, string $type, ?string $version = null) : array
     {
         if ($this->elasticsearchIndex->existIndex([$index], $version)) {
-            return $this->esClient->getEsClient()->indices()->deleteMapping([
+            return $this->getElasticsearchClient()->indices()->deleteMapping([
                 'index' => $this->createIndexWithVersion($index, $version),
                 'type' => $type
             ]);
