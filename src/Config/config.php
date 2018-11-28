@@ -5,19 +5,5 @@ return [
     'port' => env('ELASTICSEARCH_PORT', 9200),
     'scheme' => env('ELASTICSEARCH_SCHEME', 'https'),
     'user' => env('ELASTICSEARCH_USER', ''),
-    'pass' => env('ELASTICSEARCH_PASS', ''),
-    'deploy' => [
-        'version' => [
-            'indices' => []
-        ]
-    ],
-    'snapshot' => [
-        'repository' => 'default',
-        'type' => 'gcs',
-        'settings' => []
-    ],
-    'config' => [
-        'retries' => 2,
-        'indices' => []
-    ]
+    'pass' => env('ELASTICSEARCH_PASS', '')
 ];

@@ -13,9 +13,10 @@
 [![Latest development][ico-version-dev]][link-packagist]
 [![Monthly installs][ico-downloads-monthly]][link-downloads]
 
-A service provider for laravel to managing data versions in elasticsearch.
+A laravel service provider for the elasticsearch php client: https://github.com/elastic/elasticsearch-php
 
 ## Supported laravel versions
+[![Laravel 5.6][icon-l55]][link-laravel]
 [![Laravel 5.6][icon-l56]][link-laravel]
 [![Laravel 5.7][icon-l57]][link-laravel]
 
@@ -25,11 +26,6 @@ A service provider for laravel to managing data versions in elasticsearch.
 [![Elasticsearch 6.2][icon-e62]][link-elasticsearch]
 [![Elasticsearch 6.3][icon-e63]][link-elasticsearch]
 [![Elasticsearch 6.4][icon-e64]][link-elasticsearch]
-
-## Main features
-- Migration
-- Versioning
-- Deploy
 
 ## Installation
 
@@ -63,8 +59,7 @@ If you do find an issue, please feel free to report it with GitHub's bug tracker
 Alternatively, fork the project and make a pull request. :)
 
 ## Testing
-1. docker-compose up
-2. ./vendor/phpunit/phpunit/phpunit
+>composer test
 
 ## Contributing
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
@@ -95,6 +90,7 @@ The code for LaravelElasticsearchProvider is distributed under the terms of the 
 [link-downloads]: https://packagist.org/packages/triadev/laravel-elasticsearch-provider/stats
 [link-travis]: https://travis-ci.org/triadev/LaravelElasticsearchProvider
 
+[icon-l55]: https://img.shields.io/badge/Laravel-5.5-brightgreen.svg?style=flat-square
 [icon-l56]: https://img.shields.io/badge/Laravel-5.6-brightgreen.svg?style=flat-square
 [icon-l57]: https://img.shields.io/badge/Laravel-5.7-brightgreen.svg?style=flat-square
 
