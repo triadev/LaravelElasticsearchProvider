@@ -2,9 +2,8 @@
 namespace Triadev\Es\Console\Commands\Alias;
 
 use Triadev\Es\Contract\ElasticsearchAliasContract;
-use Triadev\Es\Exception\Alias\AliasFoundException;
 use Illuminate\Console\Command;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class Create extends Command
 {
@@ -32,36 +31,30 @@ class Create extends Command
      */
     public function handle(ElasticsearchAliasContract $elasticsearchAlias)
     {
-        $index = $this->argument('index');
-        $alias = $this->argument('alias');
-        $version = $this->argument('version');
+        $index = (string)$this->argument('index');
+        $alias = (string)$this->argument('alias');
+        $version = (string)$this->argument('version');
 
-        Log::info(sprintf(
-            "The alias is created: %s | %s | %s",
-            $index,
-            $alias,
-            $version
-        ));
+        Log::info("The alias is created.", [
+            'index' => $index,
+            'alias' => $alias,
+            'version' => $version
+        ]);
 
         try {
             $elasticsearchAlias->addAlias($index, $alias, $version);
 
-            Log::info(sprintf(
-                "The alias was created: %s | %s | %s",
-                $index,
-                $alias,
-                $version
-            ));
-        } catch (AliasFoundException $e) {
-            Log::error($e->getMessage());
-        } catch (\Exception $e) {
-            Log::error(sprintf(
-                "The alias was not created: %s | %s | %s | %s",
-                $index,
-                $alias,
-                $version,
-                $e->getMessage()
-            ));
+            Log::info("The alias was created.", [
+                'index' => $index,
+                'alias' => $alias,
+                'version' => $version
+            ]);
+        } catch (\Throwable $e) {
+            Log::error($e->getMessage(), [
+                'index' => $index,
+                'alias' => $alias,
+                'version' => $version
+            ]);
         }
     }
 }

@@ -1,32 +1,14 @@
 <?php
 namespace Triadev\Es;
 
-use Elasticsearch\Client;
-use Triadev\Es\Business\Helper\Version;
-use Triadev\Es\Contract\ElasticsearchClientContract;
+use Triadev\Es\Business\AbstractElasticsearch;
 use Triadev\Es\Contract\ElasticsearchSearchContract;
 use Triadev\Es\Models\Hit;
 use Triadev\Es\Models\SearchResult;
 use Triadev\Es\Models\Shards;
 
-class ElasticsearchSearch implements ElasticsearchSearchContract
+class ElasticsearchSearch extends AbstractElasticsearch implements ElasticsearchSearchContract
 {
-    use Version;
-
-    /**
-     * @var Client
-     */
-    private $client;
-    
-    /**
-     * ElasticsearchSearch constructor.
-     * @param ElasticsearchClientContract $clientBuilder
-     */
-    public function __construct(ElasticsearchClientContract $clientBuilder)
-    {
-        $this->client = $clientBuilder->getEsClient();
-    }
-
     /**
      * Search
      *
@@ -55,7 +37,7 @@ class ElasticsearchSearch implements ElasticsearchSearchContract
         $params['type'] = implode(',', $type);
         $params['body'] = $body;
 
-        $result = $this->client->search($params);
+        $result = $this->getElasticsearchClient()->search($params);
 
         if (!$raw) {
             $searchResult = new SearchResult();
@@ -131,7 +113,7 @@ class ElasticsearchSearch implements ElasticsearchSearchContract
 
         $params['body'] = $body;
 
-        $result = $this->client->scroll($params);
+        $result = $this->getElasticsearchClient()->scroll($params);
 
         if (!$raw) {
             $searchResult = new SearchResult();

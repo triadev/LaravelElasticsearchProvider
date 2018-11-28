@@ -1,31 +1,13 @@
 <?php
 namespace Triadev\Es;
 
-use Elasticsearch\Client;
-use Triadev\Es\Business\Helper\Version;
+use Triadev\Es\Business\AbstractElasticsearch;
 use Triadev\Es\Contract\ElasticsearchAliasContract;
-use Triadev\Es\Contract\ElasticsearchClientContract;
 use Triadev\Es\Exception\Alias\AliasFoundException;
 use Triadev\Es\Exception\Alias\AliasNotFoundException;
 
-class ElasticsearchAlias implements ElasticsearchAliasContract
+class ElasticsearchAlias extends AbstractElasticsearch implements ElasticsearchAliasContract
 {
-    use Version;
-
-    /**
-     * @var Client
-     */
-    private $client;
-    
-    /**
-     * ElasticsearchAlias constructor.
-     * @param ElasticsearchClientContract $clientBuilder
-     */
-    public function __construct(ElasticsearchClientContract $clientBuilder)
-    {
-        $this->client = $clientBuilder->getEsClient();
-    }
-
     /**
      * Add an alias
      *
@@ -38,7 +20,7 @@ class ElasticsearchAlias implements ElasticsearchAliasContract
     public function addAlias(string $index, string $alias, string $version = null) : array
     {
         if (!$this->existAlias([$index], [$alias], $version)) {
-            return $this->client->indices()->putAlias([
+            return $this->getElasticsearchClient()->indices()->putAlias([
                 'index' => $this->createIndexWithVersion($index, $version),
                 'name' => $alias
             ]);
@@ -59,7 +41,7 @@ class ElasticsearchAlias implements ElasticsearchAliasContract
     public function deleteAlias(string $index, string $alias, string $version = null) : array
     {
         if ($this->existAlias([$index], [$alias], $version)) {
-            return $this->client->indices()->deleteAlias([
+            return $this->getElasticsearchClient()->indices()->deleteAlias([
                 'index' => $this->createIndexWithVersion($index, $version),
                 'name' => $alias
             ]);
@@ -87,6 +69,6 @@ class ElasticsearchAlias implements ElasticsearchAliasContract
         }
         $params['index'] = implode(',', $indices);
 
-        return $this->client->indices()->existsAlias($params);
+        return $this->getElasticsearchClient()->indices()->existsAlias($params);
     }
 }

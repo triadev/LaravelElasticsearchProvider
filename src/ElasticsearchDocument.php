@@ -1,29 +1,11 @@
 <?php
 namespace Triadev\Es;
 
-use Elasticsearch\Client;
-use Triadev\Es\Business\Helper\Version;
-use Triadev\Es\Contract\ElasticsearchClientContract;
+use Triadev\Es\Business\AbstractElasticsearch;
 use Triadev\Es\Contract\ElasticsearchDocumentContract;
 
-class ElasticsearchDocument implements ElasticsearchDocumentContract
+class ElasticsearchDocument extends AbstractElasticsearch implements ElasticsearchDocumentContract
 {
-    use Version;
-
-    /**
-     * @var Client
-     */
-    private $client;
-    
-    /**
-     * ElasticsearchAlias constructor.
-     * @param ElasticsearchClientContract $clientBuilder
-     */
-    public function __construct(ElasticsearchClientContract $clientBuilder)
-    {
-        $this->client = $clientBuilder->getEsClient();
-    }
-
     /**
      * Create document
      *
@@ -48,7 +30,7 @@ class ElasticsearchDocument implements ElasticsearchDocumentContract
             $params['id'] = $id;
         }
 
-        $result = $this->client->index($params);
+        $result = $this->getElasticsearchClient()->index($params);
 
         return $result;
     }
@@ -77,7 +59,7 @@ class ElasticsearchDocument implements ElasticsearchDocumentContract
             $params['id'] = $id;
         }
 
-        $result = $this->client->update($params);
+        $result = $this->getElasticsearchClient()->update($params);
 
         return $result;
     }
@@ -124,7 +106,7 @@ class ElasticsearchDocument implements ElasticsearchDocumentContract
             $params['body'][] = $b;
         }
 
-        $result = $this->client->bulk($params);
+        $result = $this->getElasticsearchClient()->bulk($params);
 
         return $result;
     }
@@ -150,7 +132,7 @@ class ElasticsearchDocument implements ElasticsearchDocumentContract
         $params['type'] = $type;
         $params['id'] = $id;
 
-        $result = $this->client->delete($params);
+        $result = $this->getElasticsearchClient()->delete($params);
 
         return $result;
     }
@@ -190,7 +172,7 @@ class ElasticsearchDocument implements ElasticsearchDocumentContract
             ];
         }
         
-        $result = $this->client->bulk($params);
+        $result = $this->getElasticsearchClient()->bulk($params);
         
         return $result;
     }
@@ -216,7 +198,7 @@ class ElasticsearchDocument implements ElasticsearchDocumentContract
         $params['type'] = $type;
         $params['body'] = $body;
 
-        $result = $this->client->deleteByQuery($params);
+        $result = $this->getElasticsearchClient()->deleteByQuery($params);
 
         return $result;
     }
@@ -240,7 +222,7 @@ class ElasticsearchDocument implements ElasticsearchDocumentContract
         $params['type'] = $type;
         $params['id'] = $id;
 
-        $result = $this->client->get($params);
+        $result = $this->getElasticsearchClient()->get($params);
 
         return $result;
     }
@@ -263,7 +245,7 @@ class ElasticsearchDocument implements ElasticsearchDocumentContract
         $params['index'] = $this->createIndexWithVersion($index, $version);
         $params['type'] = $type;
 
-        $result = $this->client->mget($params);
+        $result = $this->getElasticsearchClient()->mget($params);
 
         return $result;
     }
@@ -289,7 +271,7 @@ class ElasticsearchDocument implements ElasticsearchDocumentContract
         $params['type'] = $type;
         $params['id'] = $id;
 
-        $result = (bool)$this->client->exists($params);
+        $result = (bool)$this->getElasticsearchClient()->exists($params);
 
         return $result;
     }
@@ -312,7 +294,7 @@ class ElasticsearchDocument implements ElasticsearchDocumentContract
         $params['index'] = $this->createIndexWithVersion($index, $version);
         $params['type'] = $type;
     
-        $result = $this->client->count($params);
+        $result = $this->getElasticsearchClient()->count($params);
     
         return $result['count'];
     }

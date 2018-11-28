@@ -9,13 +9,11 @@ use Triadev\Es\Console\Commands\Migration\Deploy;
 use Triadev\Es\Console\Commands\Migration\Reindex;
 use Triadev\Es\Console\Commands\Version\Overview;
 use Triadev\Es\Contract\ElasticsearchAliasContract;
-use Triadev\Es\Contract\ElasticsearchClientContract;
 use Triadev\Es\Contract\ElasticsearchDocumentContract;
 use Triadev\Es\Contract\ElasticsearchIndexContract;
 use Triadev\Es\Contract\ElasticsearchMappingContract;
 use Triadev\Es\Contract\ElasticsearchSearchContract;
 use Triadev\Es\ElasticsearchAlias;
-use Triadev\Es\ElasticsearchClient;
 use Triadev\Es\ElasticsearchDocument;
 use Triadev\Es\ElasticsearchIndex;
 use Triadev\Es\ElasticsearchMapping;
@@ -59,10 +57,6 @@ class ElasticsearchServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(ElasticsearchClientContract::class, function () {
-            return app()->make(ElasticsearchClient::class);
-        });
-    
         $this->app->singleton(ElasticsearchIndexContract::class, function () {
             return app()->make(ElasticsearchIndex::class);
         });

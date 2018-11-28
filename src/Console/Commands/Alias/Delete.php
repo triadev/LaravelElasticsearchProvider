@@ -4,7 +4,7 @@ namespace Triadev\Es\Console\Commands\Alias;
 use Triadev\Es\Contract\ElasticsearchAliasContract;
 use Triadev\Es\Exception\Alias\AliasNotFoundException;
 use Illuminate\Console\Command;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class Delete extends Command
 {
