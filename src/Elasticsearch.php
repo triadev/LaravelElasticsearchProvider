@@ -39,6 +39,8 @@ class Elasticsearch implements ElasticsearchContract
             ]
         ]);
         
+        $clientBuilder->setRetries(array_get($config, 'retries'));
+        
         return $clientBuilder->build();
     }
 }

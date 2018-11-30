@@ -45,13 +45,14 @@ php artisan vendor:publish --provider="Triadev\Es\Provider\ElasticsearchServiceP
 This will create a file ```config/triadev-elasticsearch.php```.
 
 ## Configuration
-| Key        | Value           | Description  |
-|:-------------:|:-------------:|:-----:|
-| ELASTICSEARCH_HOST | STRING | Host |
-| ELASTICSEARCH_PORT | INTEGER | Default: 9200 |
-| ELASTICSEARCH_SCHEME | STRING | https or http |
-| ELASTICSEARCH_USER | STRING | Username |
-| ELASTICSEARCH_PASS | STRING | Password |
+| Key        | Value           | Description  | Default |
+|:-------------:|:-------------:|:-----:|:-----:|
+| ELASTICSEARCH_HOST | STRING | Host | localhost |
+| ELASTICSEARCH_PORT | INTEGER | Port | 9200
+| ELASTICSEARCH_SCHEME | STRING | https or http | https |
+| ELASTICSEARCH_USER | STRING | Username | empty |
+| ELASTICSEARCH_PASS | STRING | Password | empty |
+| ELASTICSEARCH_RETRIES | INTEGER | operation retries | 3 |
 
 ## Reporting Issues
 If you do find an issue, please feel free to report it with GitHub's bug tracker for this project.

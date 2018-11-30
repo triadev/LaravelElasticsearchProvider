@@ -5,5 +5,6 @@ return [
     'port' => env('ELASTICSEARCH_PORT', 9200),
     'scheme' => env('ELASTICSEARCH_SCHEME', 'https'),
     'user' => env('ELASTICSEARCH_USER', ''),
-    'pass' => env('ELASTICSEARCH_PASS', '')
+    'pass' => env('ELASTICSEARCH_PASS', ''),
+    'retries' => env('ELASTICSEARCH_RETRIES', 3)
 ];
