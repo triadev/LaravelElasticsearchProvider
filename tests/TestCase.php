@@ -3,7 +3,6 @@
 namespace Tests;
 
 use Triadev\Es\Provider\ElasticsearchServiceProvider;
-use Triadev\PrometheusExporter\Provider\PrometheusExporterServiceProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -13,18 +12,6 @@ class TestCase extends \Orchestra\Testbench\TestCase
     public function setUp()
     {
         parent::setUp();
-    }
-
-    /**
-     * Define environment setup.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     *
-     * @return void
-     */
-    protected function getEnvironmentSetUp($app)
-    {
-        //
     }
 
     /**
@@ -40,23 +27,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
     protected function getPackageProviders($app)
     {
         return [
-            ElasticsearchServiceProvider::class,
-            PrometheusExporterServiceProvider::class
+            ElasticsearchServiceProvider::class
         ];
-    }
-
-    /**
-     * Get package aliases.  In a normal app environment these would be added to
-     * the 'aliases' array in the config/app.php file.  If your package exposes an
-     * aliased facade, you should add the alias here, along with aliases for
-     * facades upon which your package depends, e.g. Cartalyst/Sentry.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     *
-     * @return array
-     */
-    protected function getPackageAliases($app)
-    {
-        return [];
     }
 }
