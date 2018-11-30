@@ -1,10 +1,12 @@
 <?php
 
 return [
-    'host' => env('ELASTICSEARCH_HOST', 'localhost'),
-    'port' => env('ELASTICSEARCH_PORT', 9200),
-    'scheme' => env('ELASTICSEARCH_SCHEME', 'https'),
-    'user' => env('ELASTICSEARCH_USER', ''),
-    'pass' => env('ELASTICSEARCH_PASS', ''),
-    'retries' => env('ELASTICSEARCH_RETRIES', 3)
+    'hosts' => env('ELASTICSEARCH_HOSTS', 'localhost'),
+    'retries' => env('ELASTICSEARCH_RETRIES', 3),
+    'logger' => null,
+    'connection' => [
+        'pool' => null,
+        'selector' => null
+    ],
+    'serializer' => null
 ];

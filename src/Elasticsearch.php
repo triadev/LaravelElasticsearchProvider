@@ -29,17 +29,25 @@ class Elasticsearch implements ElasticsearchContract
         $config = config('triadev-elasticsearch');
         
         $clientBuilder = ClientBuilder::create();
-        $clientBuilder->setHosts([
-            [
-                'host' => array_get($config, 'host'),
-                'port' => array_get($config, 'port'),
-                'scheme' => array_get($config, 'scheme'),
-                'user' => array_get($config, 'user'),
-                'pass' => array_get($config, 'password')
-            ]
-        ]);
         
+        $clientBuilder->setHosts(explode('|', $config, 'hosts'));
         $clientBuilder->setRetries(array_get($config, 'retries'));
+    
+        if ($logger = array_get($config, 'logger')) {
+            $clientBuilder->setLogger($logger);
+        }
+        
+        if ($connectionPool = array_get($config, 'connection.pool')) {
+            $clientBuilder->setConnectionPool($connectionPool);
+        }
+    
+        if ($connectionSelector = array_get($config, 'connection.selector')) {
+            $clientBuilder->setSelector($connectionSelector);
+        }
+    
+        if ($serializer = array_get($config, 'serializer')) {
+            $clientBuilder->setSerializer($serializer);
+        }
         
         return $clientBuilder->build();
     }

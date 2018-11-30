@@ -47,12 +47,15 @@ This will create a file ```config/triadev-elasticsearch.php```.
 ## Configuration
 | Key        | Value           | Description  | Default |
 |:-------------:|:-------------:|:-----:|:-----:|
-| ELASTICSEARCH_HOST | STRING | Host | localhost |
-| ELASTICSEARCH_PORT | INTEGER | Port | 9200
-| ELASTICSEARCH_SCHEME | STRING | https or http | https |
-| ELASTICSEARCH_USER | STRING | Username | empty |
-| ELASTICSEARCH_PASS | STRING | Password | empty |
+| ELASTICSEARCH_HOSTS | STRING | Hosts | localhost |
 | ELASTICSEARCH_RETRIES | INTEGER | operation retries | 3 |
+
+### Example: hosts
+>Delimiter for different hosts: | (pipe)
+
+```
+http://localhost:9200/|https://username:password!#$?*abc@foo.com:9200/
+```
 
 ## Reporting Issues
 If you do find an issue, please feel free to report it with GitHub's bug tracker for this project.
