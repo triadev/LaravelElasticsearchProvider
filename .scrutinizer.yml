@@ -1,13 +1,6 @@
 build:
   nodes:
     coverage:
-      services:
-        elasticsearch: 6.4.0
-
-      environment:
-        variables:
-          ELASTICSEARCH_PORT: 9200
-
       cache:
         directories:
           - vendor/
