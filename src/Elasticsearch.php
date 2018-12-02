@@ -30,7 +30,7 @@ class Elasticsearch implements ElasticsearchContract
         
         $clientBuilder = ClientBuilder::create();
         
-        $clientBuilder->setHosts(explode('|', $config, 'hosts'));
+        $clientBuilder->setHosts(explode('|', array_get($config, 'hosts')));
         $clientBuilder->setRetries(array_get($config, 'retries'));
     
         if ($logger = array_get($config, 'logger')) {
