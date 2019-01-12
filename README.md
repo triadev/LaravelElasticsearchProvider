@@ -12,6 +12,7 @@
 [![Latest stable][ico-version-stable]][link-packagist]
 [![Latest development][ico-version-dev]][link-packagist]
 [![Monthly installs][ico-downloads-monthly]][link-downloads]
+[![Total Downloads](https://img.shields.io/packagist/dt/triadev/laravel-elasticsearch-provider.svg?style=flat-square)](https://packagist.org/packages/triadev/laravel-elasticsearch-provider)
 
 A laravel service provider for the elasticsearch php client: https://github.com/elastic/elasticsearch-php
 
@@ -45,10 +46,10 @@ php artisan vendor:publish --provider="Triadev\Es\Provider\ElasticsearchServiceP
 This will create a file ```config/triadev-elasticsearch.php```.
 
 ## Configuration
-| Key        | Value           | Description  | Default |
-|:-------------:|:-------------:|:-----:|:-----:|
-| ELASTICSEARCH_HOSTS | STRING | Hosts | localhost |
-| ELASTICSEARCH_RETRIES | INTEGER | operation retries | 3 |
+| Key        | Env | Value           | Description  | Default |
+|:-------------:|:-------------:|:-------------:|:-----:|:-----:|
+| hosts | ELASTICSEARCH_HOSTS | STRING | Hosts | localhost |
+| retries | ELASTICSEARCH_RETRIES | INTEGER | operation retries | 3 |
 
 ### Example: hosts
 >Delimiter for different hosts: | (pipe)
